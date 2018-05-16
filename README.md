@@ -67,10 +67,10 @@ R is "GNU S", a freely available language and environment for statistical comput
 [12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
-[examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/console
-[examples-packrat]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/packrat
-[examples-shiny]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/shiny
-[examples-python]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/python
-[examples-java]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/java
-[examples-ruby]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/ruby
-[examples-speedy]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/speedy
+[examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
+[examples-packrat]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/packrat
+[examples-shiny]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/shiny
+[examples-python]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/python
+[examples-java]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/java
+[examples-ruby]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/ruby
+[examples-speedy]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/speedy
