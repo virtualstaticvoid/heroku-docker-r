@@ -18,6 +18,7 @@ In your R application source's root directory:
 
   FROM virtualstaticvoid/heroku-docker-r:3.4.4
   COPY --from=builder /app /app
+  ENV PORT=8080
   CMD "/usr/bin/R --no-save -f /app/run.R"
   ```
 
