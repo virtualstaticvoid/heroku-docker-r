@@ -37,11 +37,11 @@ The [examples][examples] repository contains various R applications which can be
 
 ### Speeding Up Deploys
 
-Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image (thus the runtime slug), it is possible to speed up deployments by pre-building these images. This requires having docker installed and an account on [Docker Hub][11] (or any Heroku accessible container registry) in order to deploy them.
+Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image (for the runtime slug), it is possible to speed up deployments by pre-building it. This requires having docker installed and an account on [Docker Hub][11] (or other Heroku accessible container registry) in order to deploy them.
 
-An example of how this is done is in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
+An example of how this is done can be found in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
 
-Additionally, the [`Dockerfile`][10] provides a great deal of flexibility which was not available with the R buildpack, such as installing binary dependencies and having greater control over the runtime environment.
+Additionally, the [`Dockerfile`][10] provides a great deal of flexibility which was not available with the R buildpack, such as for installing binary dependencies from other `deb` files or other repositories, having greater control over the runtime directory layout and environment.
 
 ## License
 
