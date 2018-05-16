@@ -47,6 +47,21 @@ build:
 
 	docker tag $(IMAGE_NAME):$(R_VERSION)-build $(IMAGE_NAME):build
 
+	# "build" image for shiny
+	docker build \
+		--build-arg R_VERSION=$(R_VERSION) \
+		--build-arg APT_VERSION=$(APT_VERSION) \
+		--build-arg MAINTAINER=$(MAINTAINER) \
+		--build-arg MAINTAINER_URL=$(MAINTAINER_URL) \
+		--build-arg GIT_BRANCH=$(GIT_BRANCH) \
+		--build-arg GIT_SHA=$(GIT_SHA) \
+		--build-arg GIT_DATE=$(GIT_DATE) \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--tag $(IMAGE_NAME):$(R_VERSION)-shiny \
+		- < Dockerfile.shiny
+
+	docker tag $(IMAGE_NAME):$(R_VERSION)-shiny $(IMAGE_NAME):shiny
+
 push:
 
 	docker push $(IMAGE_NAME):latest
@@ -54,3 +69,6 @@ push:
 
 	docker push $(IMAGE_NAME):build
 	docker push $(IMAGE_NAME):$(R_VERSION)-build
+
+	docker push $(IMAGE_NAME):shiny
+	docker push $(IMAGE_NAME):$(R_VERSION)-shiny

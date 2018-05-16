@@ -13,8 +13,7 @@ In your R application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:3.4.4-build AS builder
-  RUN /usr/bin/R --no-init-file --no-save --quiet --slave -e "install.packages('shiny')"
+  FROM virtualstaticvoid/heroku-docker-r:3.4.4-shiny AS builder
 
   FROM virtualstaticvoid/heroku-docker-r:3.4.4
   COPY --from=builder /app /app
