@@ -20,7 +20,7 @@ _TO BE COMPLETED_
 
 The process continues to use your `init.R` file in order to install any packages your application requires. Furthermore, the `Aptfile` continues to be supported in order to install additional binary dependencies.
 
-It is worth nothing that use of [multiple buildpacks][12] is not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
+It is worth nothing that use of [multiple buildpacks][12] are not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
 
 See the [migrating][9] guide for details on how to migrate your existing R application.
 
