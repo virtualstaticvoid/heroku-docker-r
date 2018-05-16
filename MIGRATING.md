@@ -64,7 +64,7 @@ In your R application source's root directory:
   CMD "/usr/bin/R --no-save -f /app/<your-R-program-filename>"
   ```
 
-  Change `<your-R-program-filename>` to the main R program you want to have execute. E.g. `app.R`.
+  Change `<your-R-program-filename>` to the main R program you want to have executed. E.g. `app.R`.
 
 * Create a `heroku.yml` file and insert the following content.
 
@@ -95,7 +95,62 @@ In your R application source's root directory:
 
 ## Multi-Buildpack Applications
 
-_TO BE COMPLETED_
+These steps are for R applications which use [multiple buildpacks][5].
+
+Unfortunately, use of multiple buildpacks is not supported _nor needed_ on the `container` stack.
+
+You will therefore need to refactor your setup to include the additional language stacks you need by installing them in the `Dockerfile`.
+
+This should be fairly straight forward, considering that most language stacks can be installed using `apt`.
+
+* Create a `Dockerfile` file and insert the following content.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:3.4.4-build AS builder
+
+  FROM virtualstaticvoid/heroku-docker-r:3.4.4
+  COPY --from=builder /app /app
+
+  RUN apt-get update -q \
+   && apt-get install -qy \
+     <package-list> \
+   && rm -rf /var/lib/apt/lists/*
+
+  CMD "/usr/bin/R --no-save -f /app/<your-R-program-filename>"
+  ```
+
+  Change `<package-list>` to include the binary dependencies you need to have installed, and `<your-R-program-filename>` to the main R program you want to have executed. E.g. `/app/app.R`.
+
+  Checkout the [Dockerfile][6] reference for a complete list of directives available, nothing that not all are available as specified in the Heroku Container Registry and Runtime [documentation][7].
+
+  Note that [multi-stage][8] docker builds are used to reduce the image file size produced, in order to speed up the slug deployments.
+
+* Create a `heroku.yml` file and insert the following content.
+
+  ```yaml
+  build:
+    docker:
+      web: Dockerfile
+  ```
+
+* Commit the changes, using `git` as per usual.
+
+  ```bash
+  git add Dockerfile heroku.yml
+  git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Configure Heroku to use the `container` stack.
+
+  ```bash
+  heroku stack:set container
+  ```
+
+* Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
+
+  ```bash
+  git push heroku <branch>
+  ```
 
 ## Slug Compilation
 
@@ -195,3 +250,7 @@ Furthermore, if you use [packrat][3] to manage your R package dependencies, then
 [2]: https://shiny.rstudio.com
 [3]: http://rstudio.github.io/packrat
 [4]: https://docs.docker.com/v17.09/engine/reference/builder/#cmd
+[5]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
+[6]: https://docs.docker.com/engine/reference/builder
+[7]: https://devcenter.heroku.com/articles/container-registry-and-runtime#unsupported-dockerfile-commands
+[8]: https://docs.docker.com/develop/develop-images/multistage-build
