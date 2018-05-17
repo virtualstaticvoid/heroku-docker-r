@@ -10,7 +10,7 @@ It also introduces support for [packrat][8], which is a package dependency manag
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker in such scenarios.
 
-The docker image source code can be found at [https://github.com/virtualstaticvoid/heroku-docker-r][1] and the pre-built images are deployed to [DockerHub][11].
+The docker image source code can be found at [https://github.com/virtualstaticvoid/heroku-docker-r][1] and the pre-built images are deployed to [DockerHub][13].
 
 ## Usage
 
@@ -77,6 +77,7 @@ R is "GNU S", a freely available language and environment for statistical comput
 [10]: https://docs.docker.com/engine/reference/builder
 [11]: https://hub.docker.com
 [12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
+[13]: https://hub.docker.com/r/virtualstaticvoid/heroku-docker-r
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
