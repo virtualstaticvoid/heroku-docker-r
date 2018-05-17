@@ -18,7 +18,84 @@ Pre-built images are available available on [DockerHub][13].
 
 ### New R Applications
 
-_TO BE COMPLETED_
+Run `heroku create --stack=container` to create a [container based][7] application on Heroku.
+
+#### Shiny Applications
+
+These steps are for [shiny][14] applications.
+
+In your R application source's root directory:
+
+* Create a `Dockerfile` file and insert the following content.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:shiny AS builder
+
+  FROM virtualstaticvoid/heroku-docker-r
+  COPY --from=builder /app /app
+  ENV PORT=8080
+  CMD "/usr/bin/R --no-save -f /app/run.R"
+  ```
+
+* Create a `heroku.yml` file and insert the following content.
+
+  ```yaml
+  build:
+    docker:
+      web: Dockerfile
+  ```
+
+* Commit the changes, using `git` as per usual.
+
+  ```bash
+  git add Dockerfile heroku.yml
+  git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
+
+  ```bash
+  git push heroku <branch>
+  ```
+
+#### Console Applications
+
+These steps are for console based applications.
+
+In your R application source's root directory:
+
+* Create a `Dockerfile` file and insert the following content.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:build AS builder
+
+  FROM virtualstaticvoid/heroku-docker-r
+  COPY --from=builder /app /app
+  CMD "/usr/bin/R --no-save -f /app/<R-program>"
+  ```
+
+  Change `<R-program>` to the main R program you want to have executed. E.g. `app.R`.
+
+* Create a `heroku.yml` file and insert the following content.
+
+  ```yaml
+  build:
+    docker:
+      console: Dockerfile
+  ```
+
+* Commit the changes, using `git` as per usual.
+
+  ```bash
+  git add Dockerfile heroku.yml
+  git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
+
+  ```bash
+  git push heroku <branch>
+  ```
 
 ### Existing R Applications
 
@@ -31,12 +108,6 @@ See the [migrating][9] guide for details on how to migrate your existing R appli
 ## Details
 
 _TO BE COMPLETED_
-
-### Images
-
-* build image
-* shiny
-* runtime
 
 ## Examples
 
@@ -80,6 +151,7 @@ R is "GNU S", a freely available language and environment for statistical comput
 [11]: https://hub.docker.com
 [12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
 [13]: https://hub.docker.com/r/virtualstaticvoid/heroku-docker-r
+[14]: https://shiny.rstudio.com
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
