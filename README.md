@@ -47,6 +47,10 @@ In your R application source's root directory:
       web: Dockerfile
   ```
 
+* Optionally, if you need to install additional R packages, you can use `packrat` to manage them.
+
+  This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for details.
+
 * Commit the changes, using `git` as per usual.
 
   ```bash
@@ -85,6 +89,10 @@ In your R application source's root directory:
     docker:
       console: Dockerfile
   ```
+
+* Optionally, if you need to install additional R packages, you can use `packrat` to manage them.
+
+  This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for details.
 
 * Commit the changes, using `git` as per usual.
 
