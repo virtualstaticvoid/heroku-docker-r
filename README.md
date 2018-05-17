@@ -1,6 +1,8 @@
 # Heroku R Docker Image
 
 [![Build Status](https://travis-ci.org/virtualstaticvoid/heroku-docker-r.svg?branch=master)](https://travis-ci.org/virtualstaticvoid/heroku-docker-r)
+[![](https://images.microbadger.com/badges/version/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
+[![](https://images.microbadger.com/badges/image/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
 
 This is the docker image for applications which use [R][2] for statistical computing and [CRAN][3] for R packages, running on [Heroku][4].
 
