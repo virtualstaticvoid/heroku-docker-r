@@ -193,11 +193,7 @@ remote: Step 1/1 : RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-ini
 remote:  ---> Running in f15cfb28f0c6
 remote:  ---> 131fc9dcd338
 remote: Removing intermediate container b8ec7dab059a
-remote: Removing intermediate container f15cfb28f0c6
-remote: Step 2/5 : LABEL "git.sha.heroku" "$SOURCE_VERSION"
-remote:  ---> Running in 5d5ff681aae4
-remote:  ---> 99984912d2ec
-remote: Removing intermediate container 5d5ff681aae4
+...
 remote: Step 3/5 : FROM virtualstaticvoid/heroku-docker-r
 remote: 3.4.4: Pulling from virtualstaticvoid/heroku-docker-r
 remote: d3938036b19c: Already exists
@@ -223,7 +219,7 @@ remote: [Warning] One or more build-args [SOURCE_VERSION] were not consumed
 remote: Successfully built 9a5ca146f496
 remote: Successfully tagged a4d0f4b97ebe88c0e65264081366350647bfc9b6:latest
 remote: Login Succeeded
-remote: Tagged image "a4d0f4b97ebe88c0e65264081366350647bfc9b6" as "registry.heroku.com/xyz-abc-12345/console" The push refers to a repository [registry.heroku.com/xyz-abc-12345/console]
+remote: Tagged image "a4d0f4b97ebe88c0e65264081366350647bfc9b6" as "registry.heroku.com/xyz-abc-12345/console"
 remote: a0638673a463: Preparing
 ...
 remote: 3d3996739656: Waiting
@@ -236,17 +232,17 @@ To https://git.heroku.com/xyz-abc-12345.git
  * [new branch]      master -> master
 ```
 
-During this phase your `init.R` file will be executed, which typically installs and configures any R packages you require, as before with the buildpack.
+During this phase your `init.R` file is executed, to typically install and configure any R packages you require, as it did before with the R buildpack.
 
 If you have provided an `Aptfile` in your application directory then those packages will be installed during this process.
 
-Furthermore, if you use [packrat][3] to manage your R package dependencies, then you can elect to do away with your `init.R` if all it was doing was installing packages.
+Furthermore, if you use [packrat][3] to manage your R package dependencies, then you can elect to do away with your `init.R` if all it was doing was installing packages :-).
 
 ## Troubleshooting
 
-* If you are using a `Procfile`, then you will need to change the arguments to [`CMD`][4] directive in the `Dockerfile` to be the same as that in your `Procfile`.
+* If you are using a `Procfile`, then you will need to change the arguments to [`CMD`][4] directive in the `Dockerfile` to be the same as that in your `Procfile`. See the [Build Manifest][9] documentation for further details.
 * Any `fakechroot` and `fakeroot` command prefixes are no longer needed and must be removed.
-* The container's file system layout follows the same convention as that of the buildpack, so your application files are located in the `/app` directory.
+* The container's file system layout follows the same convention as that of the R buildpack, so your application files will be located in the `/app` directory.
 
 [1]: https://github.com/virtualstaticvoid/heroku-buildpack-r
 [2]: https://shiny.rstudio.com
@@ -256,3 +252,4 @@ Furthermore, if you use [packrat][3] to manage your R package dependencies, then
 [6]: https://docs.docker.com/engine/reference/builder
 [7]: https://devcenter.heroku.com/articles/container-registry-and-runtime#unsupported-dockerfile-commands
 [8]: https://docs.docker.com/develop/develop-images/multistage-build
+[9]: https://devcenter.heroku.com/articles/heroku-yml-build-manifest#defining-the-process-to-run
