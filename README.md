@@ -14,7 +14,7 @@ It also introduces support for [packrat][8], which is a package dependency manag
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker in such scenarios.
 
-Pre-built images are available available on [DockerHub][13].
+Pre-built images are published to [DockerHub][13].
 
 ## Usage
 
@@ -64,9 +64,9 @@ In your R application source's root directory:
   git push heroku <branch>
   ```
 
-#### Console Applications
+#### Other R Applications
 
-These steps are for console based applications.
+These steps are for console and other types of R applications.
 
 In your R application source's root directory:
 
@@ -87,7 +87,7 @@ In your R application source's root directory:
   ```yaml
   build:
     docker:
-      console: Dockerfile
+      service: Dockerfile
   ```
 
 * Optionally, if you need to install additional R packages, you can use `packrat` to manage them.

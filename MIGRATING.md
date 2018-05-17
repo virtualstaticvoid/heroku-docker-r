@@ -50,9 +50,9 @@ In your R application source's root directory:
   git push heroku <branch>
   ```
 
-## Console Applications
+## Other R Applications
 
-These steps are for console based applications.
+These steps are for console and other types of R applications.
 
 In your R application source's root directory:
 
@@ -73,7 +73,7 @@ In your R application source's root directory:
   ```yaml
   build:
     docker:
-      console: Dockerfile
+      service: Dockerfile
   ```
 
 * Commit the changes, using `git` as per usual.
@@ -113,6 +113,7 @@ This should be fairly simple, considering that most language stacks can be insta
   FROM virtualstaticvoid/heroku-docker-r
   COPY --from=builder /app /app
 
+  # install packages into the runtime image
   RUN apt-get update -q \
    && apt-get install -qy \
      <package-list> \
@@ -134,6 +135,7 @@ This should be fairly simple, considering that most language stacks can be insta
   ```
   FROM virtualstaticvoid/heroku-docker-r:build AS builder
 
+  # install packages into the buildtime image
   RUN apt-get update -q \
    && apt-get install -qy \
      libgmp3-dev \
@@ -149,6 +151,7 @@ This should be fairly simple, considering that most language stacks can be insta
   ```
   FROM virtualstaticvoid/heroku-docker-r:build AS builder
 
+  # install packages into the buildtime image
   RUN apt-get update -q \
    && apt-get install -qy \
      <build-package-list> \
@@ -157,6 +160,7 @@ This should be fairly simple, considering that most language stacks can be insta
   FROM virtualstaticvoid/heroku-docker-r
   COPY --from=builder /app /app
 
+  # install packages into the runtime image
   RUN apt-get update -q \
    && apt-get install -qy \
      <runtime-package-list> \
@@ -196,9 +200,15 @@ This should be fairly simple, considering that most language stacks can be insta
 
 ## Slug Compilation
 
-During the slug compilation phase during a Heroku deploy with the `container` stack, you will notice that the build output is now different. It contains the docker build instructions and outputs as the image is being built.
+During the slug compilation phase of the Heroku deploy on the `container` stack, you will notice that the build output is now different. It shows the docker build instructions and outputs as the image is being built.
 
-Example output during deployment of a console application:
+During this phase your `init.R` file is executed, to typically install and configure any R packages you require, as it did before with the R buildpack.
+
+If you have provided an `Aptfile` in your application directory then those packages will be installed during this process.
+
+Furthermore, if you use [packrat][3] to manage your R package dependencies, then you can elect to do away with your `init.R` if all it was doing was installing packages :-).
+
+This is an example of the output during compilation:
 
 ```
 $ git push heroku master
@@ -271,12 +281,6 @@ remote: Verifying deploy... done.
 To https://git.heroku.com/xyz-abc-12345.git
  * [new branch]      master -> master
 ```
-
-During this phase your `init.R` file is executed, to typically install and configure any R packages you require, as it did before with the R buildpack.
-
-If you have provided an `Aptfile` in your application directory then those packages will be installed during this process.
-
-Furthermore, if you use [packrat][3] to manage your R package dependencies, then you can elect to do away with your `init.R` if all it was doing was installing packages :-).
 
 ## Troubleshooting
 
