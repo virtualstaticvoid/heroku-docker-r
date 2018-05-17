@@ -2,13 +2,13 @@
 
 This guide is for migrating existing R applications which make use of the [heroku-buildpack-r][1] on Heroku.
 
-Follow these steps to define the docker image and deployment configuration for your application.
+Follow these steps to migrate your R application to use the Heroku `container` stack.
 
-_NOTE_: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker in such scenarios.
+**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed in that case.
 
 ## Shiny Applications
 
-These steps are for [shiny][2] applications.
+These steps are for [Shiny][2] applications.
 
 In your R application source's root directory:
 
@@ -66,14 +66,14 @@ In your R application source's root directory:
   CMD "/usr/bin/R --no-save -f /app/<R-program>"
   ```
 
-  Change `<R-program>` to the main R program you want to have executed. E.g. `app.R`.
+  Change `<R-program>` to be the main R program you want to have executed, or change it to just run the R console for interactive use. E.g. `CMD "/usr/bin/R --no-save"`.
 
 * Create a `heroku.yml` file and insert the following content.
 
   ```yaml
   build:
     docker:
-      service: Dockerfile
+      app: Dockerfile
   ```
 
 * Commit the changes, using `git` as per usual.
@@ -97,106 +97,11 @@ In your R application source's root directory:
 
 ## Multi-Buildpack Applications
 
-These steps are for R applications which use [multiple buildpacks][5].
+For R applications which make use of [multiple buildpacks][5], this is not supported _nor needed_ on the `container` stack.
 
-Unfortunately, use of multiple buildpacks is not supported _nor needed_ on the `container` stack.
+You will need to refactor your setup to include the components, which those buildpacks provided, in the `Dockerfile` if possible.
 
-You will therefore need to refactor your setup to include the language stacks you need by installing them using instructions in the `Dockerfile`.
-
-This should be fairly simple, considering that most language stacks can be installed using `apt`.
-
-* Create a `Dockerfile` file and insert the following content.
-
-  ```
-  FROM virtualstaticvoid/heroku-docker-r:build AS builder
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
-
-  # install packages into the runtime image
-  RUN apt-get update -q \
-   && apt-get install -qy \
-     <package-list> \
-   && rm -rf /var/lib/apt/lists/*
-
-  CMD "/usr/bin/R --no-save -f /app/<R-program>"
-  ```
-
-  Change the `<package-list>` to include the binary dependencies you need to have installed, and `<R-program>` to the main R program you want to have executed. E.g. `/app/app.R`.
-
-  Checkout the [Dockerfile][6] reference for a complete list of directives available. Note that not all of them can be used, as specified in the [Heroku Container Registry and Runtime][7] documentation.
-
-  Note that a [multi-stage][8] build is used to segment the development and runtime images, so that the development one includes build time components such as header files and compilers, and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
-
-  It may be necessary to install development dependencies in order for some R packages to compile correctly. Therefore it may be necessary to add additional `RUN` directives to the "builder" stage of the `Dockerfile`.
-
-  For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile. Since `libgmp3` is already installed, it is only necessary to include the `*-dev` dependency in the "builder" stage, as shown here.
-
-  ```
-  FROM virtualstaticvoid/heroku-docker-r:build AS builder
-
-  # install packages into the buildtime image
-  RUN apt-get update -q \
-   && apt-get install -qy \
-     libgmp3-dev \
-   && rm -rf /var/lib/apt/lists/*
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
-  CMD "/usr/bin/R --no-save -f /app/<R-program>"
-  ```
-
-  Note that in cases where the dependency isn't included in either image, it will be necessary to install it at each stage.
-
-  ```
-  FROM virtualstaticvoid/heroku-docker-r:build AS builder
-
-  # install packages into the buildtime image
-  RUN apt-get update -q \
-   && apt-get install -qy \
-     <build-package-list> \
-   && rm -rf /var/lib/apt/lists/*
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
-
-  # install packages into the runtime image
-  RUN apt-get update -q \
-   && apt-get install -qy \
-     <runtime-package-list> \
-   && rm -rf /var/lib/apt/lists/*
-
-  CMD "/usr/bin/R --no-save -f /app/<R-program>"
-  ```
-
-  In the above example, replace `<build-package-list>` and `<runtime-package-list>` with the desired packages to install. In the case of the `<build-package-list>` packages, these will typically be the `*-dev` packages, whilst `<runtime-package-list>` will be their runtime counterparts.
-
-* Create a `heroku.yml` file and insert the following content.
-
-  ```yaml
-  build:
-    docker:
-      web: Dockerfile
-  ```
-
-* Commit the changes, using `git` as per usual.
-
-  ```bash
-  git add Dockerfile heroku.yml
-  git commit -m "Using heroku-docker-r FTW"
-  ```
-
-* Configure Heroku to use the `container` stack.
-
-  ```bash
-  heroku stack:set container
-  ```
-
-* Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
-
-  ```bash
-  git push heroku <branch>
-  ```
+Details on this are out of the scope of this document, as there are too many permutations possible.
 
 ## Slug Compilation
 
