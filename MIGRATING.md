@@ -125,7 +125,47 @@ This should be fairly simple, considering that most language stacks can be insta
 
   Checkout the [Dockerfile][6] reference for a complete list of directives available. Note that not all of them can be used, as specified in the [Heroku Container Registry and Runtime][7] documentation.
 
-  A [multi-stage][8] docker build is used to segment the development and runtime images, such that the development one includes build time components such as header files and compilers, and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
+  Note that a [multi-stage][8] build is used to segment the development and runtime images, so that the development one includes build time components such as header files and compilers, and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
+
+  It may be necessary to install development dependencies in order for some R packages to compile correctly. Therefore it may be necessary to add additional `RUN` directives to the "builder" stage of the `Dockerfile`.
+
+  For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile. Since `libgmp3` is already installed, it is only necessary to include the `*-dev` dependency in the "builder" stage, as shown here.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:build AS builder
+
+  RUN apt-get update -q \
+   && apt-get install -qy \
+     libgmp3-dev \
+   && rm -rf /var/lib/apt/lists/*
+
+  FROM virtualstaticvoid/heroku-docker-r
+  COPY --from=builder /app /app
+  CMD "/usr/bin/R --no-save -f /app/<R-program>"
+  ```
+
+  Note that in cases where the dependency isn't included in either image, it will be necessary to install it at each stage.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:build AS builder
+
+  RUN apt-get update -q \
+   && apt-get install -qy \
+     <build-package-list> \
+   && rm -rf /var/lib/apt/lists/*
+
+  FROM virtualstaticvoid/heroku-docker-r
+  COPY --from=builder /app /app
+
+  RUN apt-get update -q \
+   && apt-get install -qy \
+     <runtime-package-list> \
+   && rm -rf /var/lib/apt/lists/*
+
+  CMD "/usr/bin/R --no-save -f /app/<R-program>"
+  ```
+
+  In the above example, replace `<build-package-list>` and `<runtime-package-list>` with the desired packages to install. In the case of the `<build-package-list>` packages, these will typically be the `*-dev` packages, whilst `<runtime-package-list>` will be their runtime counterparts.
 
 * Create a `heroku.yml` file and insert the following content.
 
@@ -253,3 +293,4 @@ Furthermore, if you use [packrat][3] to manage your R package dependencies, then
 [7]: https://devcenter.heroku.com/articles/container-registry-and-runtime#unsupported-dockerfile-commands
 [8]: https://docs.docker.com/develop/develop-images/multistage-build
 [9]: https://devcenter.heroku.com/articles/heroku-yml-build-manifest#defining-the-process-to-run
+[10]: https://cran.r-project.org/web/packages/gmp/index.html
