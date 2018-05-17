@@ -35,12 +35,12 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
     r-base-dev=$APT_VERSION \
     r-recommended=$APT_VERSION \
   && echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
+  && mkdir -p /app/R/site-library \
   && echo '.libPaths(c("/app/R/site-library", .libPaths()))' >> /etc/R/Rprofile.site \
   && /usr/bin/R --no-init-file --no-save --quiet --slave -e "install.packages('shiny')" \
   && rm -rf /var/lib/apt/lists/*
 
-# setup app directory
-RUN mkdir -p /app /app/R/site-library
+# set /app as working directory
 WORKDIR /app
 
 # on build, copy application files
