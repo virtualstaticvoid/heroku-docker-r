@@ -113,29 +113,17 @@ For R applications which have additional binary dependencies, the `container` st
 
 In this project, a [multi-stage][8] build is used to segment the buildtime and runtime images, so that the buildtime image includes components such as header files and compilers and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
 
-To install additional dependencies, add a script called `onbuild` to the root of your application's directory, and it will be executed within the buildtime image, and a script called `onrelease`, which be executed within the runtime image.
+To install additional dependencies, add a script called `onbuild` to the root of your application's directory and it will be executed within the buildtime image.
 
-For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile and `libgmp3` in order to execute.
-
-Therefore the `onbuild` file will install the `*-dev` versions.
+For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile. The `onbuild` script is used to install `libgmp3-dev` in this example.
 
 ```
 #!/bin/bash
-
 apt-get update -q
 apt-get install -qy libgmp3-dev
 ```
 
-And the `onrelease` file will install the runtime version.
-
-```
-#!/bin/bash
-
-apt-get update -q
-apt-get install -qy libgmp3
-```
-
-You can use the `onbuild` and `onrelease` files for other purposes too, such as for compiling programs or making configuration changes etc.
+You can use the `onbuild` script for other purposes too, such as for compiling programs or making configuration changes etc.
 
 #### Multi-Language Applications
 

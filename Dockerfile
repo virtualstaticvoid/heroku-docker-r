@@ -40,8 +40,5 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
 # set /app as working directory
 WORKDIR /app
 
-# on build, for installing additional dependencies etc.
-ONBUILD RUN if [ -f "/app/onrelease" ]; then bash /app/onrelease; fi;
-
 # run R console
 CMD ["/usr/bin/R"]
