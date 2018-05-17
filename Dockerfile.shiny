@@ -44,6 +44,9 @@ WORKDIR /app
 # on build, copy application files
 ONBUILD COPY . /app
 
+# on build, for installing additional dependencies etc.
+ONBUILD RUN if [ -f "/app/onbuild" ]; then bash /app/onbuild; fi;
+
 # on build, for backward compatibility, look for /app/Aptfile and if it exists, install the packages contained
 ONBUILD RUN if [ -f "/app/Aptfile" ]; then apt-get update -q && cat Aptfile | xargs apt-get -qy install && rm -rf /var/lib/apt/lists/*; fi;
 

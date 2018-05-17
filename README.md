@@ -113,52 +113,29 @@ For R applications which have additional binary dependencies, the `container` st
 
 In this project, a [multi-stage][8] build is used to segment the buildtime and runtime images, so that the buildtime image includes components such as header files and compilers and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
 
-To install additional dependencies, add `RUN` directives to the `Dockerfile` with the relevant commands.
+To install additional dependencies, add a script called `onbuild` to the root of your application's directory, and it will be executed within the buildtime image, and a script called `onrelease`, which be executed within the runtime image.
 
-Consult the [Dockerfile][6] reference guide for the complete list of directives available. Note that not all of them can be used, as specified in the [Heroku Container Registry and Runtime][7] documentation.
+For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile and `libgmp3` in order to execute.
 
-For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile. Since `libgmp3` is installed by default, it is only necessary to include the `*-dev` dependency to the builder stage, as shown here.
-
-```
-FROM virtualstaticvoid/heroku-docker-r:build AS builder
-
-# install packages into the buildtime image
-RUN apt-get update -q \
- && apt-get install -qy \
-   libgmp3-dev \
- && rm -rf /var/lib/apt/lists/*
-
-FROM virtualstaticvoid/heroku-docker-r
-COPY --from=builder /app /app
-CMD "/usr/bin/R --no-save -f /app/<R-program>"
-```
-
-The `RUN` command shown above follows a common pattern used in `Dockerfiles`, where commands are chained together so as to create one layer in the image. In this case, it updates the `apt` cache, installs the `libgmp3-dev` package and cleans up the cache, thus reducing the image size.
-
-In cases where the dependency isn't included in either image, it will be necessary to install during both stages, as shown here.
+Therefore the `onbuild` file will install the `*-dev` versions.
 
 ```
-FROM virtualstaticvoid/heroku-docker-r:build AS builder
+#!/bin/bash
 
-# install packages into the buildtime image
-RUN apt-get update -q \
- && apt-get install -qy \
-   <build-package-list> \
- && rm -rf /var/lib/apt/lists/*
-
-FROM virtualstaticvoid/heroku-docker-r
-COPY --from=builder /app /app
-
-# install packages into the runtime image
-RUN apt-get update -q \
- && apt-get install -qy \
-   <runtime-package-list> \
- && rm -rf /var/lib/apt/lists/*
-
-CMD "/usr/bin/R --no-save -f /app/<R-program>"
+apt-get update -q
+apt-get install -qy libgmp3-dev
 ```
 
-In the above example, replace `<build-package-list>` and `<runtime-package-list>` with the desired packages to install. For the `<build-package-list>` packages, these will typically be the `*-dev` versions, whilst `<runtime-package-list>` will be for their runtime counterparts.
+And the `onrelease` file will install the runtime version.
+
+```
+#!/bin/bash
+
+apt-get update -q
+apt-get install -qy libgmp3
+```
+
+You can use the `onbuild` and `onrelease` files for other purposes too, such as for compiling programs or making configuration changes etc.
 
 #### Multi-Language Applications
 
