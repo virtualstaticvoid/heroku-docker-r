@@ -1,8 +1,10 @@
 # Migrating Existing R Applications
 
-This guide is for migrating your existing R application which used the [heroku-buildpack-r][1] on Heroku.
+This guide is for migrating existing R applications which make use of the [heroku-buildpack-r][1] on Heroku.
 
 Follow these steps to define the docker image and deployment configuration for your application.
+
+_NOTE_: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker in such scenarios.
 
 ## Shiny Applications
 
@@ -61,10 +63,10 @@ In your R application source's root directory:
 
   FROM virtualstaticvoid/heroku-docker-r
   COPY --from=builder /app /app
-  CMD "/usr/bin/R --no-save -f /app/<your-R-program-filename>"
+  CMD "/usr/bin/R --no-save -f /app/<R-program>"
   ```
 
-  Change `<your-R-program-filename>` to the main R program you want to have executed. E.g. `app.R`.
+  Change `<R-program>` to the main R program you want to have executed. E.g. `app.R`.
 
 * Create a `heroku.yml` file and insert the following content.
 
@@ -99,9 +101,9 @@ These steps are for R applications which use [multiple buildpacks][5].
 
 Unfortunately, use of multiple buildpacks is not supported _nor needed_ on the `container` stack.
 
-You will therefore need to refactor your setup to include the additional language stacks you need by installing them in the `Dockerfile`.
+You will therefore need to refactor your setup to include the language stacks you need by installing them using instructions in the `Dockerfile`.
 
-This should be fairly straight forward, considering that most language stacks can be installed using `apt`.
+This should be fairly simple, considering that most language stacks can be installed using `apt`.
 
 * Create a `Dockerfile` file and insert the following content.
 
@@ -116,14 +118,14 @@ This should be fairly straight forward, considering that most language stacks ca
      <package-list> \
    && rm -rf /var/lib/apt/lists/*
 
-  CMD "/usr/bin/R --no-save -f /app/<your-R-program-filename>"
+  CMD "/usr/bin/R --no-save -f /app/<R-program>"
   ```
 
-  Change `<package-list>` to include the binary dependencies you need to have installed, and `<your-R-program-filename>` to the main R program you want to have executed. E.g. `/app/app.R`.
+  Change the `<package-list>` to include the binary dependencies you need to have installed, and `<R-program>` to the main R program you want to have executed. E.g. `/app/app.R`.
 
-  Checkout the [Dockerfile][6] reference for a complete list of directives available, nothing that not all are available as specified in the Heroku Container Registry and Runtime [documentation][7].
+  Checkout the [Dockerfile][6] reference for a complete list of directives available. Note that not all of them can be used, as specified in the [Heroku Container Registry and Runtime][7] documentation.
 
-  Note that [multi-stage][8] docker builds are used to reduce the image file size produced, in order to speed up the slug deployments.
+  A [multi-stage][8] docker build is used to segment the development and runtime images, such that the development one includes build time components such as header files and compilers, and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
 
 * Create a `heroku.yml` file and insert the following content.
 
