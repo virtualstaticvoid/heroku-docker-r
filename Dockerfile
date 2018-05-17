@@ -2,7 +2,6 @@ FROM heroku/heroku:16
 
 ARG R_VERSION
 ARG APT_VERSION
-ARG GIT_BRANCH
 ARG GIT_SHA
 ARG GIT_DATE
 ARG BUILD_DATE
@@ -11,7 +10,6 @@ ARG MAINTAINER_URL
 
 LABEL "r.version"="$R_VERSION" \
       "r.version.apt"="$APT_VERSION" \
-      "git.branch"="$GIT_BRANCH" \
       "git.sha"="$GIT_SHA" \
       "git.date"="$GIT_DATE" \
       "build.date"="$BUILD_DATE" \
