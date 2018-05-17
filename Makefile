@@ -72,3 +72,8 @@ push:
 
 	docker push $(IMAGE_NAME):shiny
 	docker push $(IMAGE_NAME):$(R_VERSION)-shiny
+
+test:
+
+	# TODO
+	@echo ""

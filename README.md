@@ -1,5 +1,7 @@
 # Heroku R Docker Image
 
+[![Build Status](https://travis-ci.org/virtualstaticvoid/heroku-docker-r.svg?branch=master)](https://travis-ci.org/virtualstaticvoid/heroku-docker-r)
+
 This is the docker image for applications which use [R][2] for statistical computing and [CRAN][3] for R packages, running on [Heroku][4].
 
 This project is compatible with the [heroku-buildpack-r][5] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][7] stack.
