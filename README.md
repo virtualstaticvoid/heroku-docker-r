@@ -8,7 +8,9 @@ This new stack alleviates the complexities and many of the issues with the R bui
 
 It also introduces support for [packrat][8], which is a package dependency manager.
 
-The docker image source code can be found at [https://github.com/virtualstaticvoid/heroku-docker-r][1].
+_NOTE_: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker in such scenarios.
+
+The docker image source code can be found at [https://github.com/virtualstaticvoid/heroku-docker-r][1] and the pre-built images are deployed to [DockerHub][11].
 
 ## Usage
 
@@ -23,6 +25,16 @@ The process continues to use your `init.R` file in order to install any packages
 It is worth nothing that use of [multiple buildpacks][12] are not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
 
 See the [migrating][9] guide for details on how to migrate your existing R application.
+
+## Details
+
+_TO BE COMPLETED_
+
+### Images
+
+* build image
+* shiny
+* runtime
 
 ## Examples
 
@@ -41,7 +53,7 @@ Since the container stack makes use of docker together with a [`Dockerfile`][10]
 
 An example of how this is done can be found in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
 
-Additionally, the [`Dockerfile`][10] provides a great deal of flexibility which was not available with the R buildpack, such as for installing binary dependencies from other `deb` files or other repositories, having greater control over the runtime directory layout and environment.
+The [`Dockerfile`][10] provides a great deal of flexibility which was not available with the R buildpack, such as for installing binary dependencies from other sources and/or `deb` files, and having greater control over the runtime directory layout and execution environment.
 
 ## License
 
