@@ -12,19 +12,19 @@ This new stack alleviates the complexities and many of the issues with the R bui
 
 It also introduces support for [packrat][8], which is a package dependency manager.
 
-**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker in such scenarios.
+Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku:16][15] docker image to ensure compatibility for existing R applications which run on the `heroku-16` stack.
 
-Pre-built images are published to [DockerHub][13].
+**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed in that case.
 
 ## Usage
 
 ### New R Applications
 
-Run `heroku create --stack=container` to create a [container based][7] application on Heroku.
+Run `heroku create --stack=container` from your R application source's root directory to create a [container based][7] application on Heroku.
 
 #### Shiny Applications
 
-These steps are for [shiny][14] applications.
+These steps are for [Shiny][14] applications.
 
 In your R application source's root directory:
 
@@ -107,36 +107,90 @@ In your R application source's root directory:
   git push heroku <branch>
   ```
 
+#### Applications with Additional Dependencies
+
+For R applications which have additional binary dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack; such as for installing binary dependencies from other sources, from `deb` files or by compiling from scratch. It also provides greater control over the runtime directory layout and execution environment.
+
+In this project, a [multi-stage][8] build is used to segment the buildtime and runtime images, so that the buildtime image includes components such as header files and compilers and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
+
+To install additional dependencies, add `RUN` directives to the `Dockerfile` with the relevant commands.
+
+Consult the [Dockerfile][6] reference guide for the complete list of directives available. Note that not all of them can be used, as specified in the [Heroku Container Registry and Runtime][7] documentation.
+
+For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile. Since `libgmp3` is installed by default, it is only necessary to include the `*-dev` dependency to the builder stage, as shown here.
+
+```
+FROM virtualstaticvoid/heroku-docker-r:build AS builder
+
+# install packages into the buildtime image
+RUN apt-get update -q \
+ && apt-get install -qy \
+   libgmp3-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+FROM virtualstaticvoid/heroku-docker-r
+COPY --from=builder /app /app
+CMD "/usr/bin/R --no-save -f /app/<R-program>"
+```
+
+The `RUN` command shown above follows a common pattern used in `Dockerfiles`, where commands are chained together so as to create one layer in the image. In this case, it updates the `apt` cache, installs the `libgmp3-dev` package and cleans up the cache, thus reducing the image size.
+
+In cases where the dependency isn't included in either image, it will be necessary to install during both stages, as shown here.
+
+```
+FROM virtualstaticvoid/heroku-docker-r:build AS builder
+
+# install packages into the buildtime image
+RUN apt-get update -q \
+ && apt-get install -qy \
+   <build-package-list> \
+ && rm -rf /var/lib/apt/lists/*
+
+FROM virtualstaticvoid/heroku-docker-r
+COPY --from=builder /app /app
+
+# install packages into the runtime image
+RUN apt-get update -q \
+ && apt-get install -qy \
+   <runtime-package-list> \
+ && rm -rf /var/lib/apt/lists/*
+
+CMD "/usr/bin/R --no-save -f /app/<R-program>"
+```
+
+In the above example, replace `<build-package-list>` and `<runtime-package-list>` with the desired packages to install. For the `<build-package-list>` packages, these will typically be the `*-dev` versions, whilst `<runtime-package-list>` will be for their runtime counterparts.
+
+#### Multi-Language Applications
+
+For applications which use another language, such as Python or Java, to interface with R, the `container` stack gives you much more flexibility and control over the environment.
+
+This is out of the scope for this document, since there are too many permutations possible, however some [examples][examples] are provided to help you get the idea.
+
 ### Existing R Applications
+
+For R applications which use the [heroku-buildpack-r][5], this project provides backward compatibility so that you can continue to enjoy the benefit of using Heroku to deploy and run your application, without much change.
 
 The process continues to use your `init.R` file in order to install any packages your application requires. Furthermore, the `Aptfile` continues to be supported in order to install additional binary dependencies.
 
-It is worth nothing that use of [multiple buildpacks][12] are not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
+It is worth nothing that use of [multiple buildpacks][12] is not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
 
-See the [migrating][9] guide for details on how to migrate your existing R application.
+Please see the [MIGRATING][9] guide for details on how to migrate your existing R application.
 
-## Details
+### Speeding Up Deploys
 
-_TO BE COMPLETED_
+Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image, it is possible to speed up deployments by pre-building them. This requires having docker installed and an account on [Docker Hub][11] or other Heroku accessible container registry.
+
+An example of how this is done can be found in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
 
 ## Examples
 
 The [examples][examples] repository contains various R applications which can be used as templates. They illustrate usage of the docker image and the configuration necessary to deploy to Heroku.
 
-* [Console][examples-console] - A simple console based R application
-* [Packrat][examples-packrat] - Illustrates using packrat
 * [Shiny][examples-shiny] - An example Shiny application
+* [Packrat][examples-packrat] - Illustrates using packrat
 * [Python][examples-python] - Shows interoperability between Python and R
 * [Java][examples-java] - Shows interoperability between Java and R
 * [Ruby][examples-ruby] - Shows interoperability between Ruby and R
-
-### Speeding Up Deploys
-
-Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image (for the runtime slug), it is possible to speed up deployments by pre-building it. This requires having docker installed and an account on [Docker Hub][11] (or other Heroku accessible container registry) in order to deploy them.
-
-An example of how this is done can be found in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
-
-The [`Dockerfile`][10] provides a great deal of flexibility which was not available with the R buildpack, such as for installing binary dependencies from other sources and/or `deb` files, and having greater control over the runtime directory layout and execution environment.
 
 ## License
 
@@ -162,6 +216,7 @@ R is "GNU S", a freely available language and environment for statistical comput
 [12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
 [13]: https://hub.docker.com/r/virtualstaticvoid/heroku-docker-r
 [14]: https://shiny.rstudio.com
+[15]: https://hub.docker.com/r/heroku/heroku
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
