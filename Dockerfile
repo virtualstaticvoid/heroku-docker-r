@@ -32,10 +32,14 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
     libgsl0-dev \
     r-base=$APT_VERSION \
     r-recommended=$APT_VERSION \
+  && rm -rf /var/lib/apt/lists/* \
   && echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
-  && mkdir -p /app/R/site-library \
   && echo '.libPaths(c("/app/R/site-library", .libPaths()))' >> /etc/R/Rprofile.site \
-  && rm -rf /var/lib/apt/lists/*
+  && echo 'source("/etc/R/helpers.R")' >> /etc/R/Rprofile.site \
+  && mkdir -p /app/R/site-library
+
+# copy over helpers script
+COPY helpers.R /etc/R/helpers.R
 
 # set /app as working directory
 WORKDIR /app
