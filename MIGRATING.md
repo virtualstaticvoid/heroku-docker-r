@@ -15,10 +15,7 @@ In your R application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:shiny AS builder
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
+  FROM virtualstaticvoid/heroku-docker-r:shiny
   ENV PORT=8080
   CMD "/usr/bin/R --no-save -f /app/run.R"
   ```
@@ -59,10 +56,7 @@ In your R application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:build AS builder
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
+  FROM virtualstaticvoid/heroku-docker-r:build
   CMD "/usr/bin/R --no-save -f /app/<R-program>"
   ```
 
@@ -127,7 +121,7 @@ remote: Compressing source files... done.
 remote: Building source:
 remote: === Fetching app code
 remote: Sending build context to Docker daemon  9.216kB
-remote: Step 1/5 : FROM virtualstaticvoid/heroku-docker-r:build AS builder
+remote: Step 1/5 : FROM virtualstaticvoid/heroku-docker-r:build
 remote: build: Pulling from virtualstaticvoid/heroku-docker-r
 remote: d3938036b19c: Pulling fs layer
 ...
@@ -140,48 +134,19 @@ remote: d3938036b19c: Pull complete
 ...
 remote: Digest: sha256:a88020addc2f8b80e674eb169e09c5b02bf1da169b6fcaef02b87b059fd38164
 remote: Status: Downloaded newer image for virtualstaticvoid/heroku-docker-r:build
-remote: # Executing 3 build triggers...
+remote: # Executing build triggers...
+...
 remote: Step 1/1 : COPY . /app
 remote: Step 1/1 : RUN if [ -f "/app/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/init.R; fi;
 remote:  ---> Running in b8ec7dab059a
 remote: Step 1/1 : RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/packrat/init.R --args --bootstrap-packrat; fi;
 remote:  ---> Running in f15cfb28f0c6
-remote:  ---> 131fc9dcd338
-remote: Removing intermediate container b8ec7dab059a
 ...
-remote: Step 3/5 : FROM virtualstaticvoid/heroku-docker-r
-remote: 3.4.4: Pulling from virtualstaticvoid/heroku-docker-r
-remote: d3938036b19c: Already exists
-...
-remote: 5555fed98b2a: Pulling fs layer
-...
-remote: 4c2d49921cd9: Waiting
-...
-remote: d5d354d6b3ec: Download complete
-remote: 5555fed98b2a: Verifying Checksum
-...
-remote: a58b50def5ab: Pull complete
-remote: Digest: sha256:b915ea54e6b4eb6a4863ee0925ed450647e6c73eba043bf60b10799b56f5a9bc
-remote: Status: Downloaded newer image for virtualstaticvoid/heroku-docker-r
-remote:  ---> 7660ef22569b
-remote: Step 4/5 : COPY --from=builder /app /app
-remote:  ---> 57ec5452947d
-remote: Step 5/5 : CMD /usr/bin/R --no-save -f /app/app.R
-remote:  ---> Running in b545087bfe76
-remote:  ---> 9a5ca146f496
-remote: Removing intermediate container b545087bfe76
-remote: [Warning] One or more build-args [SOURCE_VERSION] were not consumed
 remote: Successfully built 9a5ca146f496
 remote: Successfully tagged a4d0f4b97ebe88c0e65264081366350647bfc9b6:latest
-remote: Login Succeeded
-remote: Tagged image "a4d0f4b97ebe88c0e65264081366350647bfc9b6" as "registry.heroku.com/xyz-abc-12345/console"
 remote: a0638673a463: Preparing
-...
 remote: 3d3996739656: Waiting
-...
 remote: 3f8b58dc539d: Pushed
-...
-remote: latest: digest: sha256:5657f285ae8a39f9995af3ec89dc9431e49718bc2e43259259525a6f3d5a619f size: 2615
 remote: Verifying deploy... done.
 To https://git.heroku.com/xyz-abc-12345.git
  * [new branch]      master -> master

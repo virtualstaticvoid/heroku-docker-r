@@ -31,10 +31,7 @@ In your R application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:shiny AS builder
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
+  FROM virtualstaticvoid/heroku-docker-r:shiny
   ENV PORT=8080
   CMD "/usr/bin/R --no-save -f /app/run.R"
   ```
@@ -73,10 +70,7 @@ In your R application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:build AS builder
-
-  FROM virtualstaticvoid/heroku-docker-r
-  COPY --from=builder /app /app
+  FROM virtualstaticvoid/heroku-docker-r:build
   CMD "/usr/bin/R --no-save -f /app/<R-program>"
   ```
 
@@ -109,21 +103,9 @@ In your R application source's root directory:
 
 #### Applications with Additional Dependencies
 
-For R applications which have additional binary dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack; such as for installing binary dependencies from other sources, from `deb` files or by compiling from scratch. It also provides greater control over the runtime directory layout and execution environment.
+For R applications which have additional dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack; such as for installing dependencies from other sources, from `deb` files or by compiling libraries from scratch. It also provides greater control over the runtime directory layout and execution environment.
 
-In this project, a [multi-stage][8] build is used to segment the buildtime and runtime images, so that the buildtime image includes components such as header files and compilers and the runtime image is more lightweight, only including the binaries required to run the application in production. This also helps improve runtime security of your application.
-
-To install additional dependencies, add a script called `onbuild` to the root of your application's directory and it will be executed within the buildtime image.
-
-For example, the [`gmp`][10] R package requires headers from `libgmp3-dev` in order to compile. The `onbuild` script is used to install `libgmp3-dev` in this example.
-
-```
-#!/bin/bash
-apt-get update -q
-apt-get install -qy libgmp3-dev
-```
-
-You can use the `onbuild` script for other purposes too, such as for compiling programs or making configuration changes etc.
+_TO BE COMPLETED_
 
 #### Multi-Language Applications
 
