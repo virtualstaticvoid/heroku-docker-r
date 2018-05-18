@@ -16,7 +16,7 @@ BUILD_DATE:="$(shell date -u '+%Y-%m-%d %H:%M:%S %z')"
 
 build:
 
-	# "runtime" image
+	# "base" image
 	docker build \
 		--build-arg R_VERSION=$(R_VERSION) \
 		--build-arg APT_VERSION=$(APT_VERSION) \
@@ -32,27 +32,13 @@ build:
 
 	# "build" image
 	docker build \
-		--build-arg R_VERSION=$(R_VERSION) \
-		--build-arg APT_VERSION=$(APT_VERSION) \
-		--build-arg MAINTAINER=$(MAINTAINER) \
-		--build-arg MAINTAINER_URL=$(MAINTAINER_URL) \
-		--build-arg GIT_SHA=$(GIT_SHA) \
-		--build-arg GIT_DATE=$(GIT_DATE) \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--tag $(IMAGE_NAME):$(R_VERSION)-build \
 		--file Dockerfile.build .
 
 	docker tag $(IMAGE_NAME):$(R_VERSION)-build $(IMAGE_NAME):build
 
-	# "build" image for shiny
+	# "shiny" image
 	docker build \
-		--build-arg R_VERSION=$(R_VERSION) \
-		--build-arg APT_VERSION=$(APT_VERSION) \
-		--build-arg MAINTAINER=$(MAINTAINER) \
-		--build-arg MAINTAINER_URL=$(MAINTAINER_URL) \
-		--build-arg GIT_SHA=$(GIT_SHA) \
-		--build-arg GIT_DATE=$(GIT_DATE) \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--tag $(IMAGE_NAME):$(R_VERSION)-shiny \
 		--file Dockerfile.shiny .
 

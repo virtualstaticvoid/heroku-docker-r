@@ -1,4 +1,4 @@
-FROM heroku/heroku:16
+FROM heroku/heroku:16-build
 
 ARG R_VERSION
 ARG APT_VERSION
@@ -33,7 +33,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \
     libgsl0-dev \
-    r-base=$APT_VERSION \
+    r-base-dev=$APT_VERSION \
     r-recommended=$APT_VERSION \
   && rm -rf /var/lib/apt/lists/* \
   && echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
@@ -45,4 +45,4 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
 WORKDIR /app
 
 # run R console
-CMD ["/usr/bin/R"]
+CMD ["/usr/bin/R", "--no-save"]
