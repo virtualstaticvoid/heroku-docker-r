@@ -24,6 +24,9 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 
+# copy over helpers script
+COPY helpers.R /etc/R/helpers.R
+
 # install R & set default CRAN repo
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
   && echo 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial/' > /etc/apt/sources.list.d/cran.list \
@@ -37,9 +40,6 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
   && echo '.libPaths(c("/app/R/site-library", .libPaths()))' >> /etc/R/Rprofile.site \
   && echo 'source("/etc/R/helpers.R")' >> /etc/R/Rprofile.site \
   && mkdir -p /app/R/site-library
-
-# copy over helpers script
-COPY helpers.R /etc/R/helpers.R
 
 # set /app as working directory
 WORKDIR /app

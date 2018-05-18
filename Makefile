@@ -26,7 +26,7 @@ build:
 		--build-arg GIT_DATE=$(GIT_DATE) \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--tag $(IMAGE_NAME):$(R_VERSION) \
-		- < Dockerfile
+		--file Dockerfile .
 
 	docker tag $(IMAGE_NAME):$(R_VERSION) $(IMAGE_NAME):latest
 
@@ -40,7 +40,7 @@ build:
 		--build-arg GIT_DATE=$(GIT_DATE) \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--tag $(IMAGE_NAME):$(R_VERSION)-build \
-		- < Dockerfile.build
+		--file Dockerfile.build .
 
 	docker tag $(IMAGE_NAME):$(R_VERSION)-build $(IMAGE_NAME):build
 
@@ -54,7 +54,7 @@ build:
 		--build-arg GIT_DATE=$(GIT_DATE) \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--tag $(IMAGE_NAME):$(R_VERSION)-shiny \
-		- < Dockerfile.shiny
+		--file Dockerfile.shiny .
 
 	docker tag $(IMAGE_NAME):$(R_VERSION)-shiny $(IMAGE_NAME):shiny
 
