@@ -6,15 +6,15 @@
 
 This is the docker image for applications which use [R][2] for statistical computing and [CRAN][3] for R packages, running on [Heroku][4].
 
-This project is compatible with the [heroku-buildpack-r][5] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][7] stack.
+This project is compatible with the [heroku-buildpack-r][5] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][7] stack, however there are some caveats if multiple buildpacks were used together with [heroku-buildpack-r][5].
 
-This new stack alleviates the complexities and many of the issues with the R buildpack, and is now the recommended way to deploy R applications to Heroku.
+The new stack alleviates many of the complexities and issues with the R buildpack.
 
-It also introduces support for [packrat][8], which is a package dependency manager.
+Support has been added for [packrat][8], which is a package dependency manager.
 
 Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku:16][15] docker image to ensure compatibility for existing R applications which run on the `heroku-16` stack.
 
-**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed in that case.
+**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
 
 ## Usage
 
@@ -109,7 +109,7 @@ _TO BE COMPLETED_
 
 #### Multi-Language Applications
 
-For applications which use another language, such as Python or Java, to interface with R, the `container` stack gives you much more flexibility and control over the environment.
+For applications which use another language, such as Python or Java, to interface with R, the `container` stack gives you much more flexibility and control over the environment, however the onus is now on the developer to configure the language stack within the docker container instead of with mulitple buildpacks.
 
 This is out of the scope for this document, since there are too many permutations possible, however some [examples][examples] are provided to help you get the idea.
 
@@ -141,7 +141,7 @@ The [examples][examples] repository contains various R applications which can be
 
 ## License
 
-MIT License. Copyright (c) 2018 Chris Stefano. See MIT_LICENSE for details.
+MIT License. Copyright (c) 2018 Chris Stefano. See [MIT_LICENSE](MIT_LICENSE) for details.
 
 ## Additional Information
 
