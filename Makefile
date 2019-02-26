@@ -2,7 +2,7 @@
 all::
 
 all:: build
-.PHONY: all
+.PHONY: all push test
 
 R_VERSION:=3.4.4
 APT_VERSION:=3.4.4-1xenial0
