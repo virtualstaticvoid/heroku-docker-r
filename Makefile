@@ -4,8 +4,8 @@ all::
 all:: build
 .PHONY: all push test
 
-R_VERSION:=3.4.4
-APT_VERSION:=3.4.4-1xenial0
+R_VERSION:=3.5.2
+APT_VERSION:=$(R_VERSION)-1bionic
 
 MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
 MAINTAINER_URL:="https://github.com/virtualstaticvoid/heroku-docker-r"
