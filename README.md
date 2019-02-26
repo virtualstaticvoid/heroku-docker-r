@@ -129,6 +129,16 @@ Since the container stack makes use of docker together with a [`Dockerfile`][10]
 
 An example of how this is done can be found in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
 
+## Versions
+
+The following table lists the docker image tags for each Heroku stack and R version combination:
+
+| Heroku Stack | R Version | Build Tag                                     | Shiny Tag                                     |
+|--------------|-----------|-----------------------------------------------|-----------------------------------------------|
+| `heroku-16`  | 3.4.4     | virtualstaticvoid/heroku-docker-r:3.4.4-build | virtualstaticvoid/heroku-docker-r:3.4.4-shiny |
+| `heroku-18`  | 3.5.2     | virtualstaticvoid/heroku-docker-r:3.5.2-build | virtualstaticvoid/heroku-docker-r:3.5.2-shiny |
+| `heroku-18`  | 3.5.2     | virtualstaticvoid/heroku-docker-r:build       | virtualstaticvoid/heroku-docker-r:shiny       |
+
 ## Examples
 
 The [examples][examples] repository contains various R applications which can be used as templates. They illustrate usage of the docker image and the configuration necessary to deploy to Heroku.
