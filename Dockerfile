@@ -1,4 +1,4 @@
-FROM heroku/heroku:16-build
+FROM heroku/heroku:18-build
 
 ARG R_VERSION
 ARG APT_VERSION
@@ -29,7 +29,7 @@ COPY helpers.R /etc/R/helpers.R
 
 # install R & set default CRAN repo
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
-  && echo 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial/' > /etc/apt/sources.list.d/cran.list \
+  && echo 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' > /etc/apt/sources.list.d/cran.list \
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \
     libgsl0-dev \
