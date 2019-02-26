@@ -18,6 +18,7 @@ build:
 
 	# "base" image
 	docker build \
+		--pull \
 		--build-arg R_VERSION=$(R_VERSION) \
 		--build-arg APT_VERSION=$(APT_VERSION) \
 		--build-arg MAINTAINER=$(MAINTAINER) \
