@@ -171,9 +171,9 @@ R is "GNU S", a freely available language and environment for statistical comput
 [10]: https://docs.docker.com/engine/reference/builder
 [11]: https://hub.docker.com
 [12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
-[13]: https://hub.docker.com/r/virtualstaticvoid/heroku-docker-r
+[13]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r
 [14]: https://shiny.rstudio.com
-[15]: https://hub.docker.com/r/heroku/heroku
+[15]: https://hub.docker.com/repository/heroku/heroku
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
