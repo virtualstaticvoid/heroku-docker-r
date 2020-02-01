@@ -7,6 +7,7 @@ ARG GIT_DATE
 ARG BUILD_DATE
 ARG MAINTAINER
 ARG MAINTAINER_URL
+ARG BUILD_LOG_URL
 
 LABEL "r.version"="$R_VERSION" \
       "r.version.apt"="$APT_VERSION" \
@@ -14,7 +15,8 @@ LABEL "r.version"="$R_VERSION" \
       "git.date"="$GIT_DATE" \
       "build.date"="$BUILD_DATE" \
       "maintainer"="$MAINTAINER" \
-      "maintainer.url"="$MAINTAINER_URL"
+      "maintainer.url"="$MAINTAINER_URL" \
+      "build.log.url"="$BUILD_LOG_URL"
 
 ## Configure default locale
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
