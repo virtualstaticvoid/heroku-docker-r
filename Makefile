@@ -4,7 +4,7 @@ all::
 all:: build
 .PHONY: all push test
 
-R_VERSION:=3.5.2
+R_VERSION:=3.6.2
 APT_VERSION:=$(R_VERSION)-1bionic
 
 MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
