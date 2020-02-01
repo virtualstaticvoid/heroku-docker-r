@@ -33,12 +33,14 @@ build:
 
 	# "build" image
 	docker build \
+		--build-arg BASE_IMAGE=$(IMAGE_TAG) \
 		--tag $(IMAGE_TAG)-build \
 		--tag $(IMAGE_NAME):build \
 		--file Dockerfile.build .
 
 	# "shiny" image
 	docker build \
+		--build-arg BASE_IMAGE=$(IMAGE_TAG) \
 		--tag $(IMAGE_TAG)-shiny \
 		--tag $(IMAGE_NAME):shiny \
 		--file Dockerfile.shiny .

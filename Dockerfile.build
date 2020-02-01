@@ -1,4 +1,6 @@
-FROM virtualstaticvoid/heroku-docker-r
+ARG BASE_IMAGE
+
+FROM $BASE_IMAGE
 
 # on build, copy application files
 ONBUILD COPY . /app
