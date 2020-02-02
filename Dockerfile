@@ -7,6 +7,7 @@ ARG GIT_DATE
 ARG BUILD_DATE
 ARG MAINTAINER
 ARG MAINTAINER_URL
+ARG BUILD_LOG_URL
 
 LABEL "r.version"="$R_VERSION" \
       "r.version.apt"="$APT_VERSION" \
@@ -14,7 +15,8 @@ LABEL "r.version"="$R_VERSION" \
       "git.date"="$GIT_DATE" \
       "build.date"="$BUILD_DATE" \
       "maintainer"="$MAINTAINER" \
-      "maintainer.url"="$MAINTAINER_URL"
+      "maintainer.url"="$MAINTAINER_URL" \
+      "build.log.url"="$BUILD_LOG_URL"
 
 ## Configure default locale
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -28,7 +30,7 @@ ENV LANG en_US.UTF-8
 COPY helpers.R /etc/R/helpers.R
 
 # install R & set default CRAN repo
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && echo 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' > /etc/apt/sources.list.d/cran.list \
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \

@@ -131,13 +131,16 @@ An example of how this is done can be found in the [virtualstaticvoid/heroku-doc
 
 ## Versions
 
-The following table lists the docker image tags for each Heroku stack and R version combination:
+The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-r`][13].
 
-| Heroku Stack | R Version | Build Tag                                     | Shiny Tag                                     |
-|--------------|-----------|-----------------------------------------------|-----------------------------------------------|
-| `heroku-16`  | 3.4.4     | virtualstaticvoid/heroku-docker-r:3.4.4-build | virtualstaticvoid/heroku-docker-r:3.4.4-shiny |
-| `heroku-18`  | 3.5.2     | virtualstaticvoid/heroku-docker-r:3.5.2-build | virtualstaticvoid/heroku-docker-r:3.5.2-shiny |
-| `heroku-18`  | 3.5.2     | virtualstaticvoid/heroku-docker-r:build       | virtualstaticvoid/heroku-docker-r:shiny       |
+The following table lists the image tags for each Heroku stack and R version combination:
+
+| Heroku Stack | R Version | Base Tag      | Build Tag     | Shiny Tag     |
+|--------------|-----------|---------------|---------------|---------------|
+| `heroku-18`  | 3.6.2     | `latest`      |`build`        | `shiny`       |
+| `heroku-18`  | 3.6.2     |               |`3.6.2-build`  | `3.6.2-shiny` |
+| `heroku-18`  | 3.5.2     |               |`3.5.2-build`  | `3.5.2-shiny` |
+| `heroku-16`  | 3.4.4     |               |`3.4.4-build`  | `3.4.4-shiny` |
 
 ## Examples
 
@@ -171,9 +174,9 @@ R is "GNU S", a freely available language and environment for statistical comput
 [10]: https://docs.docker.com/engine/reference/builder
 [11]: https://hub.docker.com
 [12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
-[13]: https://hub.docker.com/r/virtualstaticvoid/heroku-docker-r
+[13]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r
 [14]: https://shiny.rstudio.com
-[15]: https://hub.docker.com/r/heroku/heroku
+[15]: https://hub.docker.com/repository/heroku/heroku
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console

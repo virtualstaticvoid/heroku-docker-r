@@ -4,7 +4,7 @@ all::
 all:: build
 .PHONY: all push test
 
-R_VERSION:=3.5.2
+R_VERSION:=3.6.2
 APT_VERSION:=$(R_VERSION)-1bionic
 
 MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
@@ -24,6 +24,7 @@ build:
 		--build-arg APT_VERSION=$(APT_VERSION) \
 		--build-arg MAINTAINER=$(MAINTAINER) \
 		--build-arg MAINTAINER_URL=$(MAINTAINER_URL) \
+		--build-arg BUILD_LOG_URL=$(TRAVIS_BUILD_WEB_URL) \
 		--build-arg GIT_SHA=$(GIT_SHA) \
 		--build-arg GIT_DATE=$(GIT_DATE) \
 		--build-arg BUILD_DATE=$(BUILD_DATE) \
@@ -33,12 +34,14 @@ build:
 
 	# "build" image
 	docker build \
+		--build-arg BASE_IMAGE=$(IMAGE_TAG) \
 		--tag $(IMAGE_TAG)-build \
 		--tag $(IMAGE_NAME):build \
 		--file Dockerfile.build .
 
 	# "shiny" image
 	docker build \
+		--build-arg BASE_IMAGE=$(IMAGE_TAG) \
 		--tag $(IMAGE_TAG)-shiny \
 		--tag $(IMAGE_NAME):shiny \
 		--file Dockerfile.shiny .
@@ -56,5 +59,5 @@ push:
 
 test:
 
-	# TODO
+	docker run $(IMAGE_TAG) R --no-save -e "capabilities()"
 	@echo ""
