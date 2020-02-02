@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+echo "Waiting for Shiny server..."
+while ! timeout 30s /bin/bash -c "echo > /dev/tcp/localhost/8080"; do
+  sleep 1
+done
+
+echo "Running test..."
+curl -v localhost:8080
