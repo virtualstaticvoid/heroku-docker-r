@@ -7,6 +7,8 @@ all:: test
 PROJ:=$(shell basename $(CURDIR))
 TEST_IMAGE:=$(IMAGE_TAG)-test-$(PROJ)
 
+export
+
 test:
 
 	docker build \
@@ -14,8 +16,8 @@ test:
 		--tag $(TEST_IMAGE) \
 		--file Dockerfile .
 
-	$(eval CONTAINERID=$(shell docker run --detach --rm $(TEST_IMAGE)))
+	docker-compose up --detach
 
-	docker exec --tty $(CONTAINERID) /bin/bash /app/test
+	docker-compose exec shiny /bin/bash /app/test
 
-	docker stop $(CONTAINERID)
+	docker-compose down
