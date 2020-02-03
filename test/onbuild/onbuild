@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+echo "On Build Script Executed"
+
+echo "Col1,Col2,Col3" > /app/test.csv
+echo "Data1,Data2,Data3" >> /app/test.csv

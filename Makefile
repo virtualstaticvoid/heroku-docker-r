@@ -2,7 +2,7 @@
 all::
 
 all:: build
-.PHONY: all push test
+.PHONY: all test push
 
 R_VERSION:=3.6.2
 APT_VERSION:=$(R_VERSION)-1bionic
@@ -14,6 +14,8 @@ IMAGE_TAG:=$(IMAGE_NAME):$(R_VERSION)
 GIT_SHA:="$(shell git rev-parse HEAD)"
 GIT_DATE:="$(shell TZ=UTC git show --quiet --date='format-local:%Y-%m-%d %H:%M:%S +0000' --format='%cd')"
 BUILD_DATE:="$(shell date -u '+%Y-%m-%d %H:%M:%S %z')"
+
+export
 
 build:
 
@@ -46,6 +48,16 @@ build:
 		--tag $(IMAGE_NAME):shiny \
 		--file Dockerfile.shiny .
 
+test:
+
+	# smoke test images, before running units
+	docker run --rm $(IMAGE_TAG) R --no-save -e "capabilities()"
+	docker run --rm $(IMAGE_TAG)-build R --no-save -e "capabilities()"
+	docker run --rm $(IMAGE_TAG)-shiny R --no-save -e "capabilities()"
+
+	# run units
+	$(MAKE) -C test test
+
 push:
 
 	docker push $(IMAGE_NAME):latest
@@ -56,8 +68,3 @@ push:
 
 	docker push $(IMAGE_NAME):shiny
 	docker push $(IMAGE_TAG)-shiny
-
-test:
-
-	docker run $(IMAGE_TAG) R --no-save -e "capabilities()"
-	@echo ""
