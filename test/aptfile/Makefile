@@ -4,8 +4,8 @@ all::
 all:: test
 .PHONY: all test
 
-PROJ=$(shell basename $(CURDIR))
-TEST_IMAGE=$(IMAGE_TAG)-test-$(PROJ)
+PROJ:=$(shell basename $(CURDIR))
+TEST_IMAGE:=$(IMAGE_TAG)-test-$(PROJ)
 
 test:
 
