@@ -137,7 +137,8 @@ The following table lists the image tags for each Heroku stack and R version com
 
 | Heroku Stack | R Version | Base Tag      | Build Tag     | Shiny Tag     |
 |--------------|-----------|---------------|---------------|---------------|
-| `heroku-18`  | 3.6.2     | `latest`      |`build`        | `shiny`       |
+| `heroku-18`  | 3.6.3     | `latest`      |`build`        | `shiny`       |
+| `heroku-18`  | 3.6.3     |               |`3.6.3-build`  | `3.6.3-shiny` |
 | `heroku-18`  | 3.6.2     |               |`3.6.2-build`  | `3.6.2-shiny` |
 | `heroku-18`  | 3.5.2     |               |`3.5.2-build`  | `3.5.2-shiny` |
 | `heroku-16`  | 3.4.4     |               |`3.4.4-build`  | `3.4.4-shiny` |

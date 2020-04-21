@@ -4,7 +4,8 @@ all::
 all:: build
 .PHONY: all test push
 
-R_VERSION:=3.6.2
+HEROKU_VERSION:=18-build.v26
+R_VERSION:=3.6.3
 APT_VERSION:=$(R_VERSION)-1bionic
 
 MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
@@ -22,6 +23,7 @@ build:
 	# "base" image
 	docker build \
 		--pull \
+		--build-arg HEROKU_VERSION=$(HEROKU_VERSION) \
 		--build-arg R_VERSION=$(R_VERSION) \
 		--build-arg APT_VERSION=$(APT_VERSION) \
 		--build-arg MAINTAINER=$(MAINTAINER) \

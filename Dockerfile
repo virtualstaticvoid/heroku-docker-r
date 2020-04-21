@@ -1,4 +1,5 @@
-FROM heroku/heroku:18-build
+ARG HEROKU_VERSION
+FROM heroku/heroku:$HEROKU_VERSION
 
 ARG R_VERSION
 ARG APT_VERSION
@@ -9,7 +10,8 @@ ARG MAINTAINER
 ARG MAINTAINER_URL
 ARG BUILD_LOG_URL
 
-LABEL "r.version"="$R_VERSION" \
+LABEL "heroku.version"="$HEROKU_VERSION" \
+      "r.version"="$R_VERSION" \
       "r.version.apt"="$APT_VERSION" \
       "git.sha"="$GIT_SHA" \
       "git.date"="$GIT_DATE" \
