@@ -5,7 +5,7 @@ all:: build
 .PHONY: all test push
 
 HEROKU_VERSION:=18-build.v26
-R_VERSION:=3.6.2
+R_VERSION:=3.6.3
 APT_VERSION:=$(R_VERSION)-1bionic
 
 MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
