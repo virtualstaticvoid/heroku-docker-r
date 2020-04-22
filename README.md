@@ -12,7 +12,7 @@ The new stack alleviates many of the complexities and issues with the R buildpac
 
 Support has been added for [packrat][8], which is a package dependency manager.
 
-Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku:16][15] docker image to ensure compatibility for existing R applications which run on the `heroku-16` stack.
+Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku][15] docker image to ensure compatibility for existing R applications which run on the `heroku-16` stack.
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
 
@@ -105,8 +105,6 @@ In your R application source's root directory:
 
 For R applications which have additional dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack; such as for installing dependencies from other sources, from `deb` files or by compiling libraries from scratch. It also provides greater control over the runtime directory layout and execution environment.
 
-_TO BE COMPLETED_
-
 #### Multi-Language Applications
 
 For applications which use another language, such as Python or Java, to interface with R, the `container` stack gives you much more flexibility and control over the environment, however the onus is now on the developer to configure the language stack within the docker container instead of with mulitple buildpacks.
@@ -131,7 +129,7 @@ An example of how this is done can be found in the [virtualstaticvoid/heroku-doc
 
 ## Versions
 
-The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-r`][13].
+The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-r`][16].
 
 The following table lists the image tags for each Heroku stack and R version combination:
 
@@ -178,6 +176,7 @@ R is "GNU S", a freely available language and environment for statistical comput
 [13]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r
 [14]: https://shiny.rstudio.com
 [15]: https://hub.docker.com/repository/heroku/heroku
+[16]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r/tags
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
