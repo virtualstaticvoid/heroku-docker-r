@@ -4,7 +4,7 @@ all::
 .PHONY: all
 all:: build
 
-HEROKU_VERSION:=18-build.v26
+HEROKU_VERSION:=18-build.v27
 R_VERSION:=3.6.3
 APT_VERSION:=$(R_VERSION)-1bionic
 
