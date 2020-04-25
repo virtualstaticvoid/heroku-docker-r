@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+echo "Waiting for Plumber server..."
+while ! timeout 30s /bin/bash -c "echo > /dev/tcp/localhost/8080"; do
+  sleep 1
+done
+
+echo "Running test..."
+curl -v localhost:8080
+curl -v "localhost:8080/echo?msg=Hello%20World!"
+curl -v -d "a=10" -d "b=2" localhost:8080/sum
+curl -v "http://localhost:8080/plot" -o plot.png
