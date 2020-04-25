@@ -2,7 +2,6 @@ ARG HEROKU_VERSION
 FROM heroku/heroku:$HEROKU_VERSION
 
 ARG R_VERSION
-ARG APT_VERSION
 ARG GIT_SHA
 ARG GIT_DATE
 ARG BUILD_DATE
@@ -12,7 +11,6 @@ ARG BUILD_LOG_URL
 
 LABEL "heroku.version"="$HEROKU_VERSION" \
       "r.version"="$R_VERSION" \
-      "r.version.apt"="$APT_VERSION" \
       "git.sha"="$GIT_SHA" \
       "git.date"="$GIT_DATE" \
       "build.date"="$BUILD_DATE" \
@@ -38,8 +36,8 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \
     libgsl0-dev \
-    r-base-dev=$APT_VERSION \
-    r-recommended=$APT_VERSION \
+    r-base-dev=${R_VERSION}* \
+    r-recommended=${R_VERSION}* \
   && apt-get autoclean \
   && rm -rf /var/lib/apt/lists/* \
   && echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \

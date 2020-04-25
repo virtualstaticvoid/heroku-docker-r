@@ -6,7 +6,6 @@ all:: build
 
 HEROKU_VERSION:=18-build.v27
 R_VERSION:=3.6.3
-APT_VERSION:=$(R_VERSION)-1bionic
 
 MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
 MAINTAINER_URL:="https://github.com/virtualstaticvoid/heroku-docker-r"
@@ -26,7 +25,6 @@ build:
 		--pull \
 		--build-arg HEROKU_VERSION=$(HEROKU_VERSION) \
 		--build-arg R_VERSION=$(R_VERSION) \
-		--build-arg APT_VERSION=$(APT_VERSION) \
 		--build-arg MAINTAINER=$(MAINTAINER) \
 		--build-arg MAINTAINER_URL=$(MAINTAINER_URL) \
 		--build-arg BUILD_LOG_URL=$(TRAVIS_BUILD_WEB_URL) \
