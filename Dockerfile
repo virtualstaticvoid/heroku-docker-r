@@ -33,7 +33,8 @@ COPY helpers.R /etc/R/helpers.R
 
 # install R & set default CRAN repo
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
-  && echo 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/' > /etc/apt/sources.list.d/cran.list \
+  && UBUNTU_VERSION=$(lsb_release -c | awk '{print $2}') \
+  && echo "deb https://cloud.r-project.org/bin/linux/ubuntu $UBUNTU_VERSION-cran35/" > /etc/apt/sources.list.d/cran.list \
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \
     libgsl0-dev \
