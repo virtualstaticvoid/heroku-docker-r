@@ -150,9 +150,16 @@ For R applications which have additional dependencies, the `container` stack giv
 
 #### Multi-Language Applications
 
-For applications which use another language, such as Python or Java, to interface with R, the `container` stack gives you much more flexibility and control over the environment, however the onus is now on the developer to configure the language stack within the docker container instead of with mulitple buildpacks.
+For applications which use another language, such as Python or Java to interface with R, the `container` stack gives you much more flexibility and control over the environment, however the onus is on the developer to configure the language stack within the docker container instead of with mulitple buildpacks.
 
-This is out of the scope for this document, since there are too many permutations possible, however some [examples][examples] are provided to help you get the idea.
+There are of course many permutations possible, so some [examples][examples] are provided to help you get the idea:
+
+* [Java][examples-java] - Shows interoperability between Java and R
+* [Python][examples-python] - Shows interoperability between Python and R
+
+In each example, the language runtimes are installed via the use of an `onbuild` shell script in the root of the project, which will be invoked during the deployment process. The shell script can run installations such as using `apt-get` for example, or any other commands to setup language support and perform configuration as needed.
+
+In the Python example, the `onbuild` installs the Python runtime and the projects `pip` packages. The Java example installs the OpenJDK, configures R accordingly and compiles the Java project files.
 
 ### Existing R Applications
 
