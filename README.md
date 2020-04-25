@@ -12,7 +12,7 @@ The new stack alleviates many of the complexities and issues with the R buildpac
 
 Support has been added for [packrat][8], which is a package dependency manager.
 
-Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku][15] docker image to ensure compatibility for existing R applications which run on the `heroku-16` stack.
+Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku][15] docker image to ensure compatibility for existing R applications.
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
 
