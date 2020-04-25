@@ -1,8 +1,8 @@
 # default build target
 all::
 
+.PHONY: all
 all:: build
-.PHONY: all test push
 
 HEROKU_VERSION:=18-build.v26
 R_VERSION:=3.6.3
@@ -18,6 +18,7 @@ BUILD_DATE:="$(shell date -u '+%Y-%m-%d %H:%M:%S %z')"
 
 export
 
+.PHONY: build
 build:
 
 	# "base" image
@@ -50,16 +51,26 @@ build:
 		--tag $(IMAGE_NAME):shiny \
 		--file Dockerfile.shiny .
 
+	# "plumber" image
+	docker build \
+		--build-arg BASE_IMAGE=$(IMAGE_TAG) \
+		--tag $(IMAGE_TAG)-plumber \
+		--tag $(IMAGE_NAME):plumber \
+		--file Dockerfile.plumber .
+
+.PHONY: test
 test:
 
 	# smoke test images, before running units
 	docker run --rm $(IMAGE_TAG) R --no-save -e "capabilities()"
 	docker run --rm $(IMAGE_TAG)-build R --no-save -e "capabilities()"
 	docker run --rm $(IMAGE_TAG)-shiny R --no-save -e "capabilities()"
+	docker run --rm $(IMAGE_TAG)-plumber R --no-save -e "capabilities()"
 
 	# run units
 	$(MAKE) -C test test
 
+.PHONY: push
 push:
 
 	docker push $(IMAGE_NAME):latest
@@ -70,3 +81,6 @@ push:
 
 	docker push $(IMAGE_NAME):shiny
 	docker push $(IMAGE_TAG)-shiny
+
+	docker push $(IMAGE_NAME):plumber
+	docker push $(IMAGE_TAG)-plumber
