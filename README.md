@@ -61,6 +61,49 @@ In your R application source's root directory:
   git push heroku <branch>
   ```
 
+See [heroku-docker-r-shiny-app][18] for an example application.
+
+#### Plumber Applications
+
+These steps are for [Plumber][17] applications.
+
+In your R application source's root directory:
+
+* Create a `Dockerfile` file and insert the following content.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:plumber
+  ENV PORT=8080
+  CMD "/usr/bin/R --no-save -f /app/run.R"
+  ```
+
+* Create a `heroku.yml` file and insert the following content.
+
+  ```yaml
+  build:
+    docker:
+      web: Dockerfile
+  ```
+
+* Optionally, if you need to install additional R packages, you can use `packrat` to manage them.
+
+  This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for details.
+
+* Commit the changes, using `git` as per usual.
+
+  ```bash
+  git add Dockerfile heroku.yml
+  git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
+
+  ```bash
+  git push heroku <branch>
+  ```
+
+See [heroku-docker-r-plumber-app][19] for an example application.
+
 #### Other R Applications
 
 These steps are for console and other types of R applications.
@@ -133,19 +176,20 @@ The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-
 
 The following table lists the image tags for each Heroku stack and R version combination:
 
-| Heroku Stack | R Version | Base Tag      | Build Tag     | Shiny Tag     |
-|--------------|-----------|---------------|---------------|---------------|
-| `heroku-18`  | 3.6.3     | `latest`      |`build`        | `shiny`       |
-| `heroku-18`  | 3.6.3     |               |`3.6.3-build`  | `3.6.3-shiny` |
-| `heroku-18`  | 3.6.2     |               |`3.6.2-build`  | `3.6.2-shiny` |
-| `heroku-18`  | 3.5.2     |               |`3.5.2-build`  | `3.5.2-shiny` |
-| `heroku-16`  | 3.4.4     |               |`3.4.4-build`  | `3.4.4-shiny` |
+| Heroku Stack | R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
+|--------------|-----------|---------------|---------------|---------------|-----------------|
+| `heroku-18`  | 3.6.3     | `latest`      |`build`        | `shiny`       | `plumber`       |
+| `heroku-18`  | 3.6.3     |               |`3.6.3-build`  | `3.6.3-shiny` | `3.6.3-plumber` |
+| `heroku-18`  | 3.6.2     |               |`3.6.2-build`  | `3.6.2-shiny` |                 |
+| `heroku-18`  | 3.5.2     |               |`3.5.2-build`  | `3.5.2-shiny` |                 |
+| `heroku-16`  | 3.4.4     |               |`3.4.4-build`  | `3.4.4-shiny` |                 |
 
 ## Examples
 
 The [examples][examples] repository contains various R applications which can be used as templates. They illustrate usage of the docker image and the configuration necessary to deploy to Heroku.
 
 * [Shiny][examples-shiny] - An example Shiny application
+* [Plumber][examples-plumber] - An example Plumber application
 * [Packrat][examples-packrat] - Illustrates using packrat
 * [Python][examples-python] - Shows interoperability between Python and R
 * [Java][examples-java] - Shows interoperability between Java and R
@@ -177,11 +221,15 @@ R is "GNU S", a freely available language and environment for statistical comput
 [14]: https://shiny.rstudio.com
 [15]: https://hub.docker.com/repository/heroku/heroku
 [16]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r/tags
+[17]: https://www.rplumber.io
+[18]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
+[19]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
 [examples-packrat]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/packrat
 [examples-shiny]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/shiny
+[examples-plumber]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/plumber
 [examples-python]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/python
 [examples-java]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/java
 [examples-ruby]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/ruby
