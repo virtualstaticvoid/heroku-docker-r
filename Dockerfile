@@ -2,21 +2,6 @@ ARG HEROKU_VERSION
 FROM heroku/heroku:$HEROKU_VERSION
 
 ARG R_VERSION
-ARG GIT_SHA
-ARG GIT_DATE
-ARG BUILD_DATE
-ARG MAINTAINER
-ARG MAINTAINER_URL
-ARG BUILD_LOG_URL
-
-LABEL "heroku.version"="$HEROKU_VERSION" \
-      "r.version"="$R_VERSION" \
-      "git.sha"="$GIT_SHA" \
-      "git.date"="$GIT_DATE" \
-      "build.date"="$BUILD_DATE" \
-      "maintainer"="$MAINTAINER" \
-      "maintainer.url"="$MAINTAINER_URL" \
-      "build.log.url"="$BUILD_LOG_URL"
 
 ## Configure default locale
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \

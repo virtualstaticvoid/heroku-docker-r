@@ -7,13 +7,13 @@ all:: build
 HEROKU_VERSION:=18-build.v27
 R_VERSION:=3.6.3
 
-MAINTAINER:="Chris Stefano <virtualstaticvoid@gmail.com>"
-MAINTAINER_URL:="https://github.com/virtualstaticvoid/heroku-docker-r"
+MAINTAINER:=Chris Stefano <virtualstaticvoid@gmail.com>
+MAINTAINER_URL:=https://github.com/virtualstaticvoid/heroku-docker-r
 IMAGE_NAME:=virtualstaticvoid/heroku-docker-r
 IMAGE_TAG:=$(IMAGE_NAME):$(R_VERSION)
-GIT_SHA:="$(shell git rev-parse HEAD)"
-GIT_DATE:="$(shell TZ=UTC git show --quiet --date='format-local:%Y-%m-%d %H:%M:%S +0000' --format='%cd')"
-BUILD_DATE:="$(shell date -u '+%Y-%m-%d %H:%M:%S %z')"
+GIT_SHA:=$(shell git rev-parse HEAD)
+GIT_DATE:=$(shell TZ=UTC git show --quiet --date='format-local:%Y-%m-%d %H:%M:%S +0000' --format='%cd')
+BUILD_DATE:=$(shell date -u '+%Y-%m-%d %H:%M:%S %z')
 
 export
 
@@ -25,12 +25,14 @@ build:
 		--pull \
 		--build-arg HEROKU_VERSION=$(HEROKU_VERSION) \
 		--build-arg R_VERSION=$(R_VERSION) \
-		--build-arg MAINTAINER=$(MAINTAINER) \
-		--build-arg MAINTAINER_URL=$(MAINTAINER_URL) \
-		--build-arg BUILD_LOG_URL=$(TRAVIS_BUILD_WEB_URL) \
-		--build-arg GIT_SHA=$(GIT_SHA) \
-		--build-arg GIT_DATE=$(GIT_DATE) \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--label "heroku.version=$(HEROKU_VERSION)" \
+		--label "r.version=$(R_VERSION)" \
+		--label "git.sha=$(GIT_SHA)" \
+		--label "git.date=$(GIT_DATE)" \
+		--label "build.date=$(BUILD_DATE)" \
+		--label "maintainer=$(MAINTAINER)" \
+		--label "maintainer.url=$(MAINTAINER_URL)" \
+		--label "build.logurl=$(TRAVIS_BUILD_WEB_URL)" \
 		--tag $(IMAGE_TAG) \
 		--tag $(IMAGE_NAME):latest \
 		--file Dockerfile .
