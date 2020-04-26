@@ -1,5 +1,7 @@
 sudo: required
-dist: xenial
+
+git:
+  depth: 1
 
 services:
   - docker
@@ -7,4 +9,9 @@ services:
 script:
   - make --no-builtin-rules build
   - make --no-builtin-rules test
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && make push; fi'
+
+deploy:
+  provider: script
+  script: 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && make push;'
+  on:
+    branch: master

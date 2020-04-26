@@ -3,7 +3,7 @@ ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
 # install plumber
-RUN /usr/bin/R --no-save --quiet --slave -e "install.packages('plumber')" > /dev/null
+RUN /usr/bin/R --no-save --quiet --slave -e "install.packages('plumber', clean=TRUE, quiet=TRUE, verbose=FALSE)"
 
 # on build, copy application files
 ONBUILD COPY . /app
