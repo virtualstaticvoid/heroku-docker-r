@@ -74,7 +74,7 @@ In your R application source's root directory:
   ```
   FROM virtualstaticvoid/heroku-docker-r:plumber
   ENV PORT=8080
-  CMD "/usr/bin/R --no-save -f /app/run.R"
+  CMD "/usr/bin/R --no-save -f /app/app.R"
   ```
 
 * Create a `heroku.yml` file and insert the following content.
