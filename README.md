@@ -10,23 +10,19 @@ This project is compatible with the [heroku-buildpack-r][5] so that it is possib
 
 The new stack alleviates many of the complexities and issues with the R buildpack.
 
-Support has been added for [packrat][8], which is a package dependency manager.
-
 Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku][15] docker image to ensure compatibility for existing R applications.
+
+Support has been added for the [packrat][8] package dependency manager.
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
 
 ## Usage
 
-### New R Applications
-
-Run `heroku create --stack=container` from your R application source's root directory to create a [container based][7] application on Heroku.
-
-#### Shiny Applications
+### Shiny Applications
 
 These steps are for [Shiny][14] applications.
 
-In your R application source's root directory:
+In your Shiny application source's root directory:
 
 * Create a `Dockerfile` file and insert the following content.
 
@@ -44,10 +40,6 @@ In your R application source's root directory:
       web: Dockerfile
   ```
 
-* Optionally, if you need to install additional R packages, you can use `packrat` to manage them.
-
-  This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for details.
-
 * Commit the changes, using `git` as per usual.
 
   ```bash
@@ -63,11 +55,11 @@ In your R application source's root directory:
 
 See [heroku-docker-r-shiny-app][18] for an example application.
 
-#### Plumber Applications
+### Plumber Applications
 
 These steps are for [Plumber][17] applications.
 
-In your R application source's root directory:
+In your Plumber application source's root directory:
 
 * Create a `Dockerfile` file and insert the following content.
 
@@ -85,10 +77,6 @@ In your R application source's root directory:
       web: Dockerfile
   ```
 
-* Optionally, if you need to install additional R packages, you can use `packrat` to manage them.
-
-  This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for details.
-
 * Commit the changes, using `git` as per usual.
 
   ```bash
@@ -104,7 +92,7 @@ In your R application source's root directory:
 
 See [heroku-docker-r-plumber-app][19] for an example application.
 
-#### Other R Applications
+### Other R Applications
 
 These steps are for console and other types of R applications.
 
@@ -127,10 +115,6 @@ In your R application source's root directory:
       service: Dockerfile
   ```
 
-* Optionally, if you need to install additional R packages, you can use `packrat` to manage them.
-
-  This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for details.
-
 * Commit the changes, using `git` as per usual.
 
   ```bash
@@ -144,24 +128,111 @@ In your R application source's root directory:
   git push heroku <branch>
   ```
 
-#### Applications with Additional Dependencies
+### Applications with Additional Dependencies
 
-For R applications which have additional dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack; such as for installing dependencies from other sources, from `deb` files or by compiling libraries from scratch. It also provides greater control over the runtime directory layout and execution environment.
+For R applications which have additional dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack;
+such as for installing dependencies from other sources, from `deb` files or by compiling libraries from scratch, or using docker's [multi-stage builds][20].
+It also provides greater control over the runtime directory layout and execution environment.
 
-#### Multi-Language Applications
+To make it easier for project authors to manage dependencies and provide backward compatibility with the [heroku-buildpack-r][5] without the need for Docker to be installed, the following functionality is provided:
 
-For applications which use another language, such as Python or Java to interface with R, the `container` stack gives you much more flexibility and control over the environment, however the onus is on the developer to configure the language stack within the docker container instead of with mulitple buildpacks.
+* `init.R`
+
+  Maintaining compatibility with the [heroku-buildpack-r][5], the `init.R` file is still supported and is used to install any R packages or config R as necessary.
+
+  In addition, an R helper function, called `helper.installPackages` is provided to simplify installing R packages. The function takes a list of R package names to install.
+
+  During the deployment process, the existence of the `./init.R` file will cause the script to be executed in R.
+
+  E.g. This example installs the `gmp` R package.
+
+  ```R
+  # install additional packages, using helper function
+  helpers.installPackages("gmp")
+  ```
+
+* `Aptfile`
+
+  Create a text file, called `Aptfile` in your project's root directory, which contains the Ubuntu package names to install.
+
+  During the deployment process, the existence of the `./Aptfile` file will cause the packages to be installed using `apt-get install ...`.
+
+  E.g. This example `Aptfile` installs the GNU Multiple Precision Arithmetic library and supporting libraries.
+
+  ```
+  libgmp10
+  libgmp3-dev
+  libmpfr4
+  libmpfr-dev
+  ```
+
+  This is based on the same technique as used by the [heroku-buildpack-apt][22] buildpack.
+
+* `onbuild`
+
+  Create a Bash script file, called `onbuild` in your project's root directory, containing the commands you need to install any dependencies, language runtimes and perform configuration tasks as needed.
+
+  During the deployment process, the existence of the `./onbuild` file will cause it to be executed in Bash.
+
+  E.g. This example `onbuild` file installs Ubuntu packages.
+
+  ```bash
+  #!/bin/bash
+  set -e # fail fast
+
+  # refresh package index
+  apt-get update -q
+
+  # install "packages"
+  apt-get install -qy packages-names
+
+  # reduce the image size by removing unnecessary Apt files
+  apt-get autoclean
+  ```
+
+  NOTE: Change "packages-names" to the list of packages you wish to install.
+
+  See [Java][examples-java], [Python][examples-python] and [Ruby][examples-ruby] for examples of using the `onbuild` Bash script.
+
+* `packrat`
+
+  If you want to install and manage R packages more reliably, you can use `packrat` to manage them. This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for further details.
+
+  During the deployment process, the existence of the `./packrat/init.R` file will cause Packrat to be bootstraped and the referenced packages installed.
+
+  It is recommended to include a `.dockerignore` file in your project's root directory, in order to exclude unnecessary directories/files being included from the `packrat` subdirectory.
+
+  E.g. Example `.dockerignore`
+
+  ```
+  packrat/lib*/
+  ```
+
+In each of the above mentioned examples, Docker's [`ONBUILD`][21] method is used to execute the step when the respective file is detected.
+
+### Multi-Language Applications
+
+For applications which use another language, such as Java, Python or Ruby to interface with R, the `container` stack gives you much more flexibility and control over the environment, however the onus is on the developer to configure the language stack within the docker container instead of with mulitple buildpacks.
+
+In each example, the language runtime can be installed via the use of an `onbuild` Bash script, which must be in the root of the project directory, and which is invoked during the deployment process.
+
+This shell script can run installations such as using `apt-get` for example, or any other commands to setup language support and perform configuration as needed.
 
 There are of course many permutations possible, so some [examples][examples] are provided to help you get the idea:
 
-* [Java][examples-java] - Shows interoperability between Java and R
-* [Python][examples-python] - Shows interoperability between Python and R
+* [Java][examples-java]
 
-In each example, the language runtimes are installed via the use of an `onbuild` shell script in the root of the project, which will be invoked during the deployment process. The shell script can run installations such as using `apt-get` for example, or any other commands to setup language support and perform configuration as needed.
+  The Java example installs the OpenJDK, configures R accordingly and compiles the project's Java source files.
 
-In the Python example, the `onbuild` installs the Python runtime and the projects `pip` packages. The Java example installs the OpenJDK, configures R accordingly and compiles the Java project files.
+* [Python][examples-python]
 
-### Existing R Applications
+  In the Python example, the `onbuild` installs the Python runtime and installs the project dependenecies using `pip`.
+
+* [Ruby][examples-ruby]
+
+  The Ruby example installs the runtime and then installs the project dependencies using `bundler`.
+
+## Existing R Applications
 
 For R applications which use the [heroku-buildpack-r][5], this project provides backward compatibility so that you can continue to enjoy the benefit of using Heroku to deploy and run your application, without much change.
 
@@ -171,11 +242,13 @@ It is worth nothing that use of [multiple buildpacks][12] is not supported _nor 
 
 Please see the [MIGRATING][9] guide for details on how to migrate your existing R application.
 
-### Speeding Up Deploys
+## Speeding Up Deploys
 
-Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image, it is possible to speed up deployments by pre-building them. This requires having docker installed and an account on [Docker Hub][11] or other Heroku accessible container registry.
+Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image, it is possible to speed up deployments by pre-building them.
 
-An example of how this is done can be found in the [virtualstaticvoid/heroku-docker-r-examples][examples-speedy] repository.
+**NOTE:** This requires having docker installed and an account on [Docker Hub][11] or other Heroku accessible container registry.
+
+An example of how this is done can be found in the ["speedy"][examples-speedy] example application.
 
 ## Versions
 
@@ -193,7 +266,9 @@ The following table lists the image tags for each Heroku stack and R version com
 
 ## Examples
 
-The [examples][examples] repository contains various R applications which can be used as templates. They illustrate usage of the docker image and the configuration necessary to deploy to Heroku.
+The [examples][examples] repository contains various R applications which can be used as templates.
+
+They illustrate usage of the docker image and the configuration necessary to deploy to Heroku.
 
 * [Shiny][examples-shiny] - An example Shiny application
 * [Plumber][examples-plumber] - An example Plumber application
@@ -231,6 +306,9 @@ R is "GNU S", a freely available language and environment for statistical comput
 [17]: https://www.rplumber.io
 [18]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
 [19]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
+[20]: https://docs.docker.com/develop/develop-images/multistage-build
+[21]: https://docs.docker.com/engine/reference/builder/#onbuild
+[22]: https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-apt
 
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
