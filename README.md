@@ -14,7 +14,8 @@ Pre-built docker images are published to [DockerHub][13], and are based off the 
 
 Support has been added for the [packrat][8] package dependency manager.
 
-**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
+**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally.
+For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
 
 ## Usage
 

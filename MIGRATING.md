@@ -4,13 +4,14 @@ This guide is for migrating existing R applications which make use of the [herok
 
 Follow these steps to migrate your R application to use the Heroku `container` stack.
 
-**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally. For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed in that case.
+**NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally.
+For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
 
 ## Shiny Applications
 
 These steps are for [Shiny][2] applications.
 
-In your R application source's root directory:
+In your Shiny application source's root directory:
 
 * Create a `Dockerfile` file and insert the following content.
 
@@ -46,6 +47,51 @@ In your R application source's root directory:
   ```bash
   git push heroku <branch>
   ```
+
+See [heroku-docker-r-shiny-app][11] for an example application.
+
+### Plumber Applications
+
+These steps are for [Plumber][17] applications.
+
+In your Plumber application source's root directory:
+
+* Create a `Dockerfile` file and insert the following content.
+
+  ```
+  FROM virtualstaticvoid/heroku-docker-r:plumber
+  ENV PORT=8080
+  CMD ["/usr/bin/R", "--no-save", "--gui-none", "-f /app/app.R"]
+  ```
+
+* Create a `heroku.yml` file and insert the following content.
+
+  ```yaml
+  build:
+    docker:
+      web: Dockerfile
+  ```
+
+* Commit the changes, using `git` as per usual.
+
+  ```bash
+  git add Dockerfile heroku.yml
+  git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Configure Heroku to use the `container` stack.
+
+  ```bash
+  heroku stack:set container
+  ```
+
+* Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
+
+  ```bash
+  git push heroku <branch>
+  ```
+
+See [heroku-docker-r-plumber-app][12] for an example application.
 
 ## Other R Applications
 
@@ -154,8 +200,8 @@ To https://git.heroku.com/xyz-abc-12345.git
 
 ## Troubleshooting
 
-* If you are using a `Procfile`, then you will need to change the arguments to [`CMD`][4] directive in the `Dockerfile` to be the same as that in your `Procfile`. See the [Build Manifest][9] documentation for further details.
-* Any `fakechroot` and `fakeroot` command prefixes are no longer needed and must be removed.
+* If you are using a `Procfile`, then you will need to change the arguments of the [`CMD`][4] directive in the `Dockerfile` to be the same as that in your `Procfile`. Alternatively, you can provide `run` directives in the `heroku.yml` file, to match your `Procfile`. See the [heroku.yml documentation][9] for further details.
+* Any `fakechroot`, `fakeroot` and `chroot` command prefixes are no longer needed and must be removed.
 * The container's file system layout follows the same convention as that of the R buildpack, so your application files will be located in the `/app` directory.
 
 [1]: https://github.com/virtualstaticvoid/heroku-buildpack-r
@@ -166,5 +212,7 @@ To https://git.heroku.com/xyz-abc-12345.git
 [6]: https://docs.docker.com/engine/reference/builder
 [7]: https://devcenter.heroku.com/articles/container-registry-and-runtime#unsupported-dockerfile-commands
 [8]: https://docs.docker.com/develop/develop-images/multistage-build
-[9]: https://devcenter.heroku.com/articles/heroku-yml-build-manifest#defining-the-process-to-run
+[9]: https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#run-defining-the-processes-to-run
 [10]: https://cran.r-project.org/web/packages/gmp/index.html
+[11]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
+[12]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
