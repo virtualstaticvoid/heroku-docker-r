@@ -1,11 +1,15 @@
 # default build target
 all::
 
-all:: test
-.PHONY: all test
+include ../../Makevars
 
 PROJ:=$(shell basename $(CURDIR))
 TEST_IMAGE:=$(IMAGE_TAG)-test-$(PROJ)
+
+export
+
+all:: test
+.PHONY: all test
 
 test:
 
@@ -15,5 +19,6 @@ test:
 		--file Dockerfile .
 
 	docker run \
+		--tty \
 		--rm \
 		$(TEST_IMAGE)
