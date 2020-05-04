@@ -66,7 +66,7 @@ In your Plumber application source's root directory:
   ```
   FROM virtualstaticvoid/heroku-docker-r:plumber
   ENV PORT=8080
-  CMD "/usr/bin/R --no-save -f /app/app.R"
+  CMD ["/usr/bin/R", "--no-save", "--gui-none", "-f /app/app.R"]
   ```
 
 * Create a `heroku.yml` file and insert the following content.
@@ -102,7 +102,7 @@ In your R application source's root directory:
 
   ```
   FROM virtualstaticvoid/heroku-docker-r:build
-  CMD "/usr/bin/R --no-save -f /app/<R-program>"
+  CMD ["/usr/bin/R", "--no-save", "-f /app/<R-program>"]
   ```
 
   Change `<R-program>` to the main R program you want to have executed. E.g. `app.R`.

@@ -57,10 +57,10 @@ In your R application source's root directory:
 
   ```
   FROM virtualstaticvoid/heroku-docker-r:build
-  CMD "/usr/bin/R --no-save -f /app/<R-program>"
+  CMD ["/usr/bin/R", "--no-save", "-f /app/<R-program>"]
   ```
 
-  Change `<R-program>` to be the main R program you want to have executed, or change it to just run the R console for interactive use. E.g. `CMD "/usr/bin/R --no-save"`.
+  Change `<R-program>` to be the main R program you want to have executed, or change it to just run the R console for interactive use. E.g. `CMD ["/usr/bin/R", "--no-save"]`.
 
 * Create a `heroku.yml` file and insert the following content.
 
