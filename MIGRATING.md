@@ -48,7 +48,7 @@ In your Shiny application source's root directory:
   git push heroku <branch>
   ```
 
-See [heroku-docker-r-shiny-app][18] for an example application.
+See [heroku-docker-r-shiny-app][11] for an example application.
 
 ### Plumber Applications
 
@@ -91,7 +91,7 @@ In your Plumber application source's root directory:
   git push heroku <branch>
   ```
 
-See [heroku-docker-r-plumber-app][19] for an example application.
+See [heroku-docker-r-plumber-app][12] for an example application.
 
 ## Other R Applications
 
@@ -214,3 +214,5 @@ To https://git.heroku.com/xyz-abc-12345.git
 [8]: https://docs.docker.com/develop/develop-images/multistage-build
 [9]: https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#run-defining-the-processes-to-run
 [10]: https://cran.r-project.org/web/packages/gmp/index.html
+[11]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
+[12]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
