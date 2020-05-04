@@ -12,6 +12,8 @@ script:
 
 deploy:
   provider: script
-  script: 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && make push;'
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && make push
+    - curl -X POST "https://hooks.microbadger.com/images/virtualstaticvoid/heroku-docker-r/$MICROBADGE_TOKEN"
   on:
     branch: master
