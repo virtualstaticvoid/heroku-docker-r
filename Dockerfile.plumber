@@ -20,3 +20,6 @@ ONBUILD RUN if [ -f "/app/init.R" ]; then /usr/bin/R --no-init-file --no-save --
 # on build, packrat restore packages
 # NOTE: packrat itself is packaged in this same structure so will be bootstrapped here
 ONBUILD RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/packrat/init.R --args --bootstrap-packrat; fi;
+
+# on build, renv restore packages
+ONBUILD RUN if [ -f "/app/renv/activate.R" ]; then /usr/bin/R --no-save --quiet --slave -e 'renv::restore()'; fi;
