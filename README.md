@@ -4,15 +4,15 @@
 [![](https://images.microbadger.com/badges/version/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
 [![](https://images.microbadger.com/badges/image/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
 
-This is the docker image for applications which use [R][2] for statistical computing and [CRAN][3] for R packages, running on [Heroku][4].
+This is the docker image for applications which use [R][rproject] for statistical computing and [CRAN][cran] for R packages, running on [Heroku][heroku].
 
-This project is compatible with the [heroku-buildpack-r][5] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][7] stack, however there are some caveats if multiple buildpacks were used together with [heroku-buildpack-r][5].
+This project is compatible with the [heroku-buildpack-r][buildpackr] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][container_stack] stack, however there are some caveats if multiple buildpacks were used together with [heroku-buildpack-r][buildpackr].
 
 The new stack alleviates many of the complexities and issues with the R buildpack.
 
-Pre-built docker images are published to [DockerHub][13], and are based off the [heroku/heroku][15] docker image to ensure compatibility for existing R applications.
+Pre-built docker images are published to [DockerHub][dockerhub], and are based off the [heroku/heroku][dhheroku] docker image to ensure compatibility for existing R applications.
 
-Support has been added for the [packrat][8] package dependency manager.
+Support has been added for [packrat][packrat] and [renv][renv] package managers.
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally.
 For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
@@ -21,7 +21,7 @@ For the most common use cases, you will probably use the default setup, so it wo
 
 ### Shiny Applications
 
-These steps are for [Shiny][14] applications.
+These steps are for [Shiny][shiny] applications.
 
 In your Shiny application source's root directory:
 
@@ -54,11 +54,11 @@ In your Shiny application source's root directory:
   git push heroku <branch>
   ```
 
-See [heroku-docker-r-shiny-app][18] for an example application.
+See [heroku-docker-r-shiny-app][shiny_app] for an example application.
 
 ### Plumber Applications
 
-These steps are for [Plumber][17] applications.
+These steps are for [Plumber][plumber] applications.
 
 In your Plumber application source's root directory:
 
@@ -91,7 +91,7 @@ In your Plumber application source's root directory:
   git push heroku <branch>
   ```
 
-See [heroku-docker-r-plumber-app][19] for an example application.
+See [heroku-docker-r-plumber-app][plumber_app] for an example application.
 
 ### Other R Applications
 
@@ -131,15 +131,17 @@ In your R application source's root directory:
 
 ### Applications with Additional Dependencies
 
-For R applications which have additional dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][10] than was previously available in the R buildpack;
-such as for installing dependencies from other sources, from `deb` files or by compiling libraries from scratch, or using docker's [multi-stage builds][20].
+For R applications which have additional dependencies, the `container` stack gives you much more flexibility with the [`Dockerfile`][builder] than was previously available in the R buildpack;
+such as for installing dependencies from other sources, from `deb` files or by compiling libraries from scratch, or using docker's [multi-stage builds][multistage].
 It also provides greater control over the runtime directory layout and execution environment.
 
-To make it easier for project authors to manage dependencies and provide backward compatibility with the [heroku-buildpack-r][5] without the need for Docker to be installed, the following functionality is provided:
+To make it easier for project authors to manage dependencies and provide backward compatibility with the [heroku-buildpack-r][buildpackr] without the need for Docker to be installed, the following functionality is provided:
+
+In each of the following examples, Docker's [`ONBUILD`][onbuild] method is used to execute the step when the respective file is detected.
 
 * `init.R`
 
-  Maintaining compatibility with the [heroku-buildpack-r][5], the `init.R` file is still supported and is used to install any R packages or config R as necessary.
+  Maintaining compatibility with the [heroku-buildpack-r][buildpackr], the `init.R` file is still supported and is used to install any R packages or config R as necessary.
 
   In addition, an R helper function, called `helper.installPackages` is provided to simplify installing R packages. The function takes a list of R package names to install.
 
@@ -167,7 +169,7 @@ To make it easier for project authors to manage dependencies and provide backwar
   libmpfr-dev
   ```
 
-  This is based on the same technique as used by the [heroku-buildpack-apt][22] buildpack.
+  This is based on the same technique as used by the [heroku-buildpack-apt][buildpack_apt] buildpack.
 
 * `onbuild`
 
@@ -197,7 +199,8 @@ To make it easier for project authors to manage dependencies and provide backwar
 
 * `packrat`
 
-  If you want to install and manage R packages more reliably, you can use `packrat` to manage them. This is the recommended way to manage your R packages. Please see the [packrat][8] documentation for further details.
+  If you want to install and manage R packages more reliably, you can use `packrat` to manage them.
+  Please see the [packrat][packrat] documentation for further details.
 
   During the deployment process, the existence of the `./packrat/init.R` file will cause Packrat to be bootstraped and the referenced packages installed.
 
@@ -209,7 +212,23 @@ To make it easier for project authors to manage dependencies and provide backwar
   packrat/lib*/
   ```
 
-In each of the above mentioned examples, Docker's [`ONBUILD`][21] method is used to execute the step when the respective file is detected.
+  NOTE: `packrat` has been soft-deprecated in favour of `renv`.
+
+* `renv`
+
+  If you want to install and manage R packages more reliably, you can use `renv` to manage them. This is the recommended way to manage your R packages. Please see the [renv][renv] documentation for further details.
+
+  During the deployment process, the existence of the `./renv/activate.R` file will cause renv to be bootstraped and the referenced packages installed.
+
+  It is recommended to include a `.dockerignore` file in your project's root directory, in order to exclude unnecessary directories/files being included from the `renv` subdirectory.
+
+  E.g. Example `.dockerignore`
+
+  ```
+  renv/library/
+  renv/python/
+  renv/staging/
+  ```
 
 ### Multi-Language Applications
 
@@ -235,25 +254,25 @@ There are of course many permutations possible, so some [examples][examples] are
 
 ## Existing R Applications
 
-For R applications which use the [heroku-buildpack-r][5], this project provides backward compatibility so that you can continue to enjoy the benefit of using Heroku to deploy and run your application, without much change.
+For R applications which use the [heroku-buildpack-r][buildpackr], this project provides backward compatibility so that you can continue to enjoy the benefit of using Heroku to deploy and run your application, without much change.
 
 The process continues to use your `init.R` file in order to install any packages your application requires. Furthermore, the `Aptfile` continues to be supported in order to install additional binary dependencies.
 
-It is worth nothing that use of [multiple buildpacks][12] is not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
+It is worth nothing that use of [multiple buildpacks][multibuildpack] is not supported _nor needed_ on the `container` stack, so you may have some rework to do if you made use of this feature.
 
-Please see the [MIGRATING][9] guide for details on how to migrate your existing R application.
+Please see the [MIGRATING](MIGRATING.md) guide for details on how to migrate your existing R application.
 
 ## Speeding Up Deploys
 
-Since the container stack makes use of docker together with a [`Dockerfile`][10] to define the image, it is possible to speed up deployments by pre-building them.
+Since the container stack makes use of docker together with a [`Dockerfile`][builder] to define the image, it is possible to speed up deployments by pre-building them.
 
-**NOTE:** This requires having docker installed and an account on [Docker Hub][11] or other Heroku accessible container registry.
+**NOTE:** This requires having docker installed and an account on [Docker Hub][dh] or other Heroku accessible container registry.
 
 An example of how this is done can be found in the ["speedy"][examples-speedy] example application.
 
 ## Versions
 
-The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-r`][16].
+The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-r`][tags].
 
 The following table lists the image tags for each Heroku stack and R version combination:
 
@@ -274,6 +293,7 @@ They illustrate usage of the docker image and the configuration necessary to dep
 * [Shiny][examples-shiny] - An example Shiny application
 * [Plumber][examples-plumber] - An example Plumber application
 * [Packrat][examples-packrat] - Illustrates using packrat
+* [Renv][examples-renv] - Illustrates using renv
 * [Python][examples-python] - Shows interoperability between Python and R
 * [Java][examples-java] - Shows interoperability between Java and R
 * [Ruby][examples-ruby] - Shows interoperability between Ruby and R
@@ -284,39 +304,37 @@ MIT License. Copyright (c) 2018 Chris Stefano. See [MIT_LICENSE](MIT_LICENSE) fo
 
 ## Additional Information
 
-R is "GNU S", a freely available language and environment for statistical computing and graphics which provides a wide variety of statistical and graphical techniques: linear and nonlinear modelling, statistical tests, time series analysis, classification, clustering, etc. Please consult the [R project homepage][2] for further information.
+R is "GNU S", a freely available language and environment for statistical computing and graphics which provides a wide variety of statistical and graphical techniques: linear and nonlinear modelling, statistical tests, time series analysis, classification, clustering, etc. Please consult the [R project homepage][rproject] for further information.
 
-[CRAN][3] is a network of FTP and Web Servers around the world that store identical, up-to-date, versions of code and documentation for R.
+[CRAN][cran] is a network of FTP and Web Servers around the world that store identical, up-to-date, versions of code and documentation for R.
 
-[1]: https://github.com/virtualstaticvoid/heroku-docker-r
-[2]: http://www.r-project.org
-[3]: http://cran.r-project.org
-[4]: https://heroku.com
-[5]: https://github.com/virtualstaticvoid/heroku-buildpack-r
-[6]: https://devcenter.heroku.com/articles/heroku-yml-build-manifest
-[7]: https://devcenter.heroku.com/articles/container-registry-and-runtime
-[8]: http://rstudio.github.io/packrat
-[9]: https://github.com/virtualstaticvoid/heroku-docker-r/blob/master/MIGRATING.md
-[10]: https://docs.docker.com/engine/reference/builder
-[11]: https://hub.docker.com
-[12]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
-[13]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r
-[14]: https://shiny.rstudio.com
-[15]: https://hub.docker.com/repository/heroku/heroku
-[16]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r/tags
-[17]: https://www.rplumber.io
-[18]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
-[19]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
-[20]: https://docs.docker.com/develop/develop-images/multistage-build
-[21]: https://docs.docker.com/engine/reference/builder/#onbuild
-[22]: https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-apt
-
-[examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
+[builder]: https://docs.docker.com/engine/reference/builder
+[buildpack_apt]: https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-apt
+[buildpackr]: https://github.com/virtualstaticvoid/heroku-buildpack-r
+[container_stack]: https://devcenter.heroku.com/articles/container-registry-and-runtime
+[cran]: http://cran.r-project.org
+[dh]: https://hub.docker.com
+[dhheroku]: https://hub.docker.com/repository/heroku/heroku
+[dockerhub]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
+[examples-java]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/java
 [examples-packrat]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/packrat
-[examples-shiny]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/shiny
 [examples-plumber]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/plumber
 [examples-python]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/python
-[examples-java]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/java
+[examples-renv]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/renv
 [examples-ruby]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/ruby
+[examples-shiny]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/shiny
 [examples-speedy]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/speedy
+[examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
+[heroku]: https://heroku.com
+[multibuildpack]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
+[multistage]: https://docs.docker.com/develop/develop-images/multistage-build
+[onbuild]: https://docs.docker.com/engine/reference/builder/#onbuild
+[packrat]: http://rstudio.github.io/packrat
+[plumber]: https://www.rplumber.io
+[plumber_app]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
+[renv]: http://rstudio.github.io/renv
+[rproject]: http://www.r-project.org
+[shiny]: https://shiny.rstudio.com
+[shiny_app]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
+[tags]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r/tags
