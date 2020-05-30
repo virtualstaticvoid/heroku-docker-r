@@ -1,4 +1,5 @@
-helpers.installPackages <- function(package_list=c()) {
+helpers.installPackages <- function(...) {
+  package_list <- c(...)
   install_if_missing = function(p) {
     if (p %in% rownames(installed.packages()) == FALSE) {
       install.packages(p, clean=TRUE)

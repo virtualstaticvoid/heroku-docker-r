@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -ex
 
-export PATH="/app/bin:/app/R/lib/R/bin:$PATH"
-export R_PROFILE=/app/R/etc/Rprofile.site
-export LD_LIBRARY_PATH=/app/R/lib/R/lib
-
 DIR="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 R --version
