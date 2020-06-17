@@ -16,6 +16,7 @@ build:
 		--pull \
 		--build-arg HEROKU_VERSION=$(HEROKU_VERSION) \
 		--build-arg R_VERSION=$(R_VERSION) \
+		--build-arg CRAN_VERSION=$(CRAN_VERSION) \
 		--label "heroku.version=$(HEROKU_VERSION)" \
 		--label "r.version=$(R_VERSION)" \
 		--label "git.sha=$(GIT_SHA)" \

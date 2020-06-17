@@ -2,6 +2,7 @@ ARG HEROKU_VERSION
 FROM heroku/heroku:$HEROKU_VERSION
 
 ARG R_VERSION
+ARG CRAN_VERSION
 
 # Set default locale
 ENV LANG C.UTF-8
@@ -16,7 +17,7 @@ COPY helpers.R /etc/R/helpers.R
 RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && UBUNTU_VERSION=$(lsb_release -c | awk '{print $2}') \
-  && echo "deb https://cloud.r-project.org/bin/linux/ubuntu $UBUNTU_VERSION-cran35/" > /etc/apt/sources.list.d/cran.list \
+  && echo "deb https://cloud.r-project.org/bin/linux/ubuntu $UBUNTU_VERSION-$CRAN_VERSION/" > /etc/apt/sources.list.d/cran.list \
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \
     apt-transport-https \

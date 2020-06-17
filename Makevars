@@ -1,5 +1,6 @@
 HEROKU_VERSION:=18-build.v27
-R_VERSION:=3.6.3
+R_VERSION:=4.0.0
+CRAN_VERSION:=cran40
 
 MAINTAINER:=Chris Stefano <virtualstaticvoid@gmail.com>
 MAINTAINER_URL:=https://github.com/virtualstaticvoid/heroku-docker-r
