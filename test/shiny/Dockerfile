@@ -10,4 +10,4 @@ FROM ${BASE_IMAGE}-shiny
 ENV PORT=8080
 
 # override the base image CMD to run Shiny
-CMD ["/usr/bin/R", "--no-save", "--gui-none", "-f /app/run.R"]
+CMD ["/usr/bin/R", "--no-save", "--gui-none", "-f", "/app/run.R"]

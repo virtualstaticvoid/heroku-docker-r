@@ -6,4 +6,4 @@ FROM ${BASE_IMAGE}-build
 #  and execute onbuild, Aptfile, init.R and restore renv packages (if they are provided)
 
 # override the base image CMD
-CMD ["/usr/bin/R", "--no-save", "-f /app/app.R"]
+CMD ["/usr/bin/R", "--no-save", "-f", "/app/app.R"]
