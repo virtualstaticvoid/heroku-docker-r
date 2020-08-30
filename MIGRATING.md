@@ -48,6 +48,12 @@ In your Shiny application source's root directory:
   git push heroku <branch>
   ```
 
+* Scale the web dyno
+
+  ```bash
+  heroku scale web=1
+  ```
+
 See [heroku-docker-r-shiny-app][11] for an example application.
 
 ### Plumber Applications
@@ -89,6 +95,12 @@ In your Plumber application source's root directory:
 
   ```bash
   git push heroku <branch>
+  ```
+
+* Scale the web dyno
+
+  ```bash
+  heroku scale web=1
   ```
 
 See [heroku-docker-r-plumber-app][12] for an example application.
@@ -133,6 +145,12 @@ In your R application source's root directory:
 
   ```bash
   git push heroku <branch>
+  ```
+
+* Run the application
+
+  ```bash
+  heroku run app
   ```
 
 ## Multi-Buildpack Applications

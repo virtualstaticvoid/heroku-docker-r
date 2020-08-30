@@ -54,6 +54,12 @@ In your Shiny application source's root directory:
   git push heroku <branch>
   ```
 
+* Scale the web dyno
+
+  ```bash
+  heroku scale web=1
+  ```
+
 See [heroku-docker-r-shiny-app][shiny_app] for an example application.
 
 ### Plumber Applications
@@ -91,6 +97,12 @@ In your Plumber application source's root directory:
   git push heroku <branch>
   ```
 
+* Scale the web dyno
+
+  ```bash
+  heroku scale web=1
+  ```
+
 See [heroku-docker-r-plumber-app][plumber_app] for an example application.
 
 ### Other R Applications
@@ -113,7 +125,7 @@ In your R application source's root directory:
   ```yaml
   build:
     docker:
-      service: Dockerfile
+      app: Dockerfile
   ```
 
 * Commit the changes, using `git` as per usual.
@@ -127,6 +139,12 @@ In your R application source's root directory:
 
   ```bash
   git push heroku <branch>
+  ```
+
+* Run the application
+
+  ```bash
+  heroku run app
   ```
 
 ### Applications with Additional Dependencies
