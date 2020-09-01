@@ -36,7 +36,13 @@ In your Shiny application source's root directory:
   git commit -m "Using heroku-docker-r FTW"
   ```
 
-* Configure Heroku to use the `container` stack.
+* Create the Heroku application with the `container` stack
+
+  ```bash
+  heroku create --stack=container
+  ```
+
+  Or configure an existing application to use the `container` stack.
 
   ```bash
   heroku stack:set container
@@ -85,7 +91,13 @@ In your Plumber application source's root directory:
   git commit -m "Using heroku-docker-r FTW"
   ```
 
-* Configure Heroku to use the `container` stack.
+* Create the Heroku application with the `container` stack
+
+  ```bash
+  heroku create --stack=container
+  ```
+
+  Or configure an existing application to use the `container` stack.
 
   ```bash
   heroku stack:set container
@@ -135,7 +147,13 @@ In your R application source's root directory:
   git commit -m "Using heroku-docker-r FTW"
   ```
 
-* Configure Heroku to use the `container` stack.
+* Create the Heroku application with the `container` stack
+
+  ```bash
+  heroku create --stack=container
+  ```
+
+  Or configure an existing application to use the `container` stack.
 
   ```bash
   heroku stack:set container

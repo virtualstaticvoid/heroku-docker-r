@@ -15,7 +15,7 @@ Pre-built docker images are published to [DockerHub][dockerhub], and are based o
 Support has been added for [packrat][packrat] and [renv][renv] package managers.
 
 **NOTE**: Docker *is not required* to be installed on your machine, unless you need to build and run the images locally.
-For the most common use cases, you will probably use the default setup, so it won't be necessary to have docker installed.
+For the most common use cases, you can probably use the default configuration so it won't be necessary to have docker installed.
 
 ## Usage
 
@@ -46,6 +46,18 @@ In your Shiny application source's root directory:
   ```bash
   git add Dockerfile heroku.yml
   git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Create the Heroku application with the `container` stack
+
+  ```bash
+  heroku create --stack=container
+  ```
+
+  Or configure an existing application to use the `container` stack.
+
+  ```bash
+  heroku stack:set container
   ```
 
 * Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
@@ -91,6 +103,18 @@ In your Plumber application source's root directory:
   git commit -m "Using heroku-docker-r FTW"
   ```
 
+* Create the Heroku application with the `container` stack
+
+  ```bash
+  heroku create --stack=container
+  ```
+
+  Or configure an existing application to use the `container` stack.
+
+  ```bash
+  heroku stack:set container
+  ```
+
 * Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
 
   ```bash
@@ -133,6 +157,18 @@ In your R application source's root directory:
   ```bash
   git add Dockerfile heroku.yml
   git commit -m "Using heroku-docker-r FTW"
+  ```
+
+* Create the Heroku application with the `container` stack
+
+  ```bash
+  heroku create --stack=container
+  ```
+
+  Or configure an existing application to use the `container` stack.
+
+  ```bash
+  heroku stack:set container
   ```
 
 * Deploy your application to Heroku, replacing `<branch>` with your branch. E.g. `master`.
