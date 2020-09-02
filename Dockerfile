@@ -1,5 +1,5 @@
-ARG HEROKU_VERSION
-FROM heroku/heroku:$HEROKU_VERSION
+ARG UBUNTU_VERSION
+FROM ubuntu:$UBUNTU_VERSION
 
 ARG R_VERSION
 ARG CRAN_VERSION
@@ -13,14 +13,26 @@ ENV TZ UTC
 # copy over helpers script
 COPY helpers.R /etc/R/helpers.R
 
+RUN export DEBIAN_FRONTEND=noninteractive \
+  && apt-get update -q \
+  && apt-get upgrade -qy \
+  && apt-get install -qy --no-install-recommends \
+    ca-certificates \
+    file \
+    gnupg2 \
+    lsb-release \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 # install R & set default CRAN repo
 RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
-  && UBUNTU_VERSION=$(lsb_release -c | awk '{print $2}') \
-  && echo "deb https://cloud.r-project.org/bin/linux/ubuntu $UBUNTU_VERSION-$CRAN_VERSION/" > /etc/apt/sources.list.d/cran.list \
+  && DISTRO=$(lsb_release -c | awk '{print $2}') \
+  && echo "deb https://cloud.r-project.org/bin/linux/ubuntu $DISTRO-$CRAN_VERSION/" > /etc/apt/sources.list.d/cran.list \
   && apt-get update -q \
   && apt-get install -qy --no-install-recommends \
     apt-transport-https \
+    automake \
     curl \
     fontconfig \
     libbz2-dev \
