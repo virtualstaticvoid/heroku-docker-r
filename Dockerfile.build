@@ -12,11 +12,11 @@ ONBUILD RUN if [ -f "/app/onbuild" ]; then bash /app/onbuild; fi;
 ONBUILD RUN if [ -f "/app/Aptfile" ]; then export DEBIAN_FRONTEND=noninteractive && apt-get update -q && cat Aptfile | xargs apt-get -qy install && apt-get clean && rm -rf /var/lib/apt/lists/*; fi;
 
 # on build, for backward compatibility, look for /app/init.R and if it exists, execute it
-ONBUILD RUN if [ -f "/app/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/init.R; fi;
+ONBUILD RUN if [ -f "/app/init.R" ]; then /usr/bin/R --no-init-file --no-save --slave -f /app/init.R; fi;
 
 # on build, packrat restore packages
 # NOTE: packrat itself is packaged in this same structure so will be bootstrapped here
-ONBUILD RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/packrat/init.R --args --bootstrap-packrat; fi;
+ONBUILD RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-init-file --no-save --slave -f /app/packrat/init.R --args --bootstrap-packrat; fi;
 
 # on build, renv restore packages
-ONBUILD RUN if [ -f "/app/renv/activate.R" ]; then /usr/bin/R --no-save --quiet --slave -e 'renv::restore()'; fi;
+ONBUILD RUN if [ -f "/app/renv/activate.R" ]; then /usr/bin/R --no-save --slave -e 'renv::restore()'; fi;
