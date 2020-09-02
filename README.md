@@ -10,7 +10,7 @@ This project is compatible with the [heroku-buildpack-r][buildpackr] so that it 
 
 The new stack alleviates many of the complexities and issues with the R buildpack.
 
-Pre-built docker images are published to [DockerHub][dockerhub], and are based off the [heroku/heroku][dhheroku] docker image to ensure compatibility for existing R applications.
+Pre-built docker images are published to [DockerHub][dockerhub], and are based off the official [Ubuntu][ubuntu] docker images.
 
 Support has been added for [packrat][packrat] and [renv][renv] package managers.
 
@@ -370,7 +370,6 @@ R is "GNU S", a freely available language and environment for statistical comput
 [container_stack]: https://devcenter.heroku.com/articles/container-registry-and-runtime
 [cran]: http://cran.r-project.org
 [dh]: https://hub.docker.com
-[dhheroku]: https://hub.docker.com/repository/heroku/heroku
 [dockerhub]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r
 [examples-console]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/console
 [examples-java]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/java
@@ -394,3 +393,4 @@ R is "GNU S", a freely available language and environment for statistical comput
 [shiny]: https://shiny.rstudio.com
 [shiny_app]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
 [tags]: https://hub.docker.com/repository/docker/virtualstaticvoid/heroku-docker-r/tags
+[ubuntu]: https://hub.docker.com/repository/ubuntu
