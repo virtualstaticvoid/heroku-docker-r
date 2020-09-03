@@ -328,17 +328,18 @@ An example of how this is done can be found in the ["speedy"][examples-speedy] e
 
 The name for images published to DockerHub is [`virtualstaticvoid/heroku-docker-r`][tags].
 
-The following table lists the image tags for each Heroku stack and R version combination:
+The following table lists the image tags for R version combination:
 
-| Heroku Stack | R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
-|--------------|-----------|---------------|---------------|---------------|-----------------|
-| `heroku-18`  | 4.0.1     | `latest`      |`build`        | `shiny`       | `plumber`       |
-| `heroku-18`  | 4.0.1     |               |`4.0.1-build`  | `4.0.1-shiny` | `4.0.1-plumber` |
-| `heroku-18`  | 4.0.0     |               |`4.0.0-build`  | `4.0.0-shiny` | `4.0.0-plumber` |
-| `heroku-18`  | 3.6.3     |               |`3.6.3-build`  | `3.6.3-shiny` | `3.6.3-plumber` |
-| `heroku-18`  | 3.6.2     |               |`3.6.2-build`  | `3.6.2-shiny` |                 |
-| `heroku-18`  | 3.5.2     |               |`3.5.2-build`  | `3.5.2-shiny` |                 |
-| `heroku-16`  | 3.4.4     |               |`3.4.4-build`  | `3.4.4-shiny` |                 |
+| R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
+|-----------|---------------|---------------|---------------|-----------------|
+| 4.0.2     | `latest`      |`build`        | `shiny`       | `plumber`       |
+| 4.0.2     |               |`4.0.2-build`  | `4.0.2-shiny` | `4.0.2-plumber` |
+| 4.0.1     |               |`4.0.1-build`  | `4.0.1-shiny` | `4.0.1-plumber` |
+| 4.0.0     |               |`4.0.0-build`  | `4.0.0-shiny` | `4.0.0-plumber` |
+| 3.6.3     |               |`3.6.3-build`  | `3.6.3-shiny` | `3.6.3-plumber` |
+| 3.6.2     |               |`3.6.2-build`  | `3.6.2-shiny` |                 |
+| 3.5.2     |               |`3.5.2-build`  | `3.5.2-shiny` |                 |
+| 3.4.4     |               |`3.4.4-build`  | `3.4.4-shiny` |                 |
 
 ## Examples
 
