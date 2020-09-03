@@ -2,6 +2,11 @@ os: linux
 dist: bionic
 language: c
 
+# only build master branch and PR's
+branches:
+  only:
+    - master
+
 services:
   - docker
 
