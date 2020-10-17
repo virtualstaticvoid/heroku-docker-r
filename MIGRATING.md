@@ -1,6 +1,6 @@
 # Migrating Existing R Applications
 
-This guide is for migrating existing R applications which make use of the [heroku-buildpack-r][1] on Heroku.
+This guide is for migrating existing R applications which make use of the [heroku-buildpack-r][bp] on Heroku.
 
 Follow these steps to migrate your R application to use the Heroku `container` stack.
 
@@ -9,7 +9,7 @@ For the most common use cases, you will probably use the default setup, so it wo
 
 ## Shiny Applications
 
-These steps are for [Shiny][2] applications.
+These steps are for [Shiny][shiny] applications.
 
 In your Shiny application source's root directory:
 
@@ -60,11 +60,11 @@ In your Shiny application source's root directory:
   heroku scale web=1
   ```
 
-See [heroku-docker-r-shiny-app][11] for an example application.
+See [heroku-docker-r-shiny-app][shiny_app] for an example application.
 
 ### Plumber Applications
 
-These steps are for [Plumber][17] applications.
+These steps are for [Plumber][plumber] applications.
 
 In your Plumber application source's root directory:
 
@@ -115,7 +115,7 @@ In your Plumber application source's root directory:
   heroku scale web=1
   ```
 
-See [heroku-docker-r-plumber-app][12] for an example application.
+See [heroku-docker-r-plumber-app][plumber_app] for an example application.
 
 ## Other R Applications
 
@@ -173,7 +173,7 @@ In your R application source's root directory:
 
 ## Multi-Buildpack Applications
 
-For R applications which make use of [multiple buildpacks][5], this is not supported _nor needed_ on the `container` stack.
+For R applications which make use of [multiple buildpacks][multibuildpack], this is not supported _nor needed_ on the `container` stack.
 
 You will need to refactor your setup to include the components, which those buildpacks provided, in the `Dockerfile` if possible.
 
@@ -187,7 +187,7 @@ During this phase your `init.R` file is executed, to typically install and confi
 
 If you have provided an `Aptfile` in your application directory then those packages will be installed during this process.
 
-Furthermore, if you use [packrat][3] to manage your R package dependencies, then you can elect to do away with your `init.R` if all it was doing was installing packages :-).
+Furthermore, if you use [packrat][packrat] or [renv][renv] to manage your R package dependencies, then you can elect to do away with your `init.R` if all it was doing was installing packages :-).
 
 This is an example of the output during compilation:
 
@@ -219,9 +219,9 @@ remote: Status: Downloaded newer image for virtualstaticvoid/heroku-docker-r:bui
 remote: # Executing build triggers...
 ...
 remote: Step 1/1 : COPY . /app
-remote: Step 1/1 : RUN if [ -f "/app/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/init.R; fi;
+remote: Step 1/1 : RUN if [ -f "/app/init.R" ]; then /usr/bin/R --no-init-file --no-save --slave -f /app/init.R; fi;
 remote:  ---> Running in b8ec7dab059a
-remote: Step 1/1 : RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/packrat/init.R --args --bootstrap-packrat; fi;
+remote: Step 1/1 : RUN if [ -f "/app/packrat/init.R" ]; then /usr/bin/R --no-init-file --no-save --slave -f /app/packrat/init.R --args --bootstrap-packrat; fi;
 remote:  ---> Running in f15cfb28f0c6
 ...
 remote: Successfully built 9a5ca146f496
@@ -236,19 +236,17 @@ To https://git.heroku.com/xyz-abc-12345.git
 
 ## Troubleshooting
 
-* If you are using a `Procfile`, then you will need to change the arguments of the [`CMD`][4] directive in the `Dockerfile` to be the same as that in your `Procfile`. Alternatively, you can provide `run` directives in the `heroku.yml` file, to match your `Procfile`. See the [heroku.yml documentation][9] for further details.
+* If you are using a `Procfile`, then you will need to change the arguments of the [`CMD`][cmd] directive in the `Dockerfile` to be the same as that in your `Procfile`. Alternatively, you can provide `run` directives in the `heroku.yml` file, to match your `Procfile`. See the [heroku.yml documentation][herokuyml] for further details.
 * Any `fakechroot`, `fakeroot` and `chroot` command prefixes are no longer needed and must be removed.
 * The container's file system layout follows the same convention as that of the R buildpack, so your application files will be located in the `/app` directory.
 
-[1]: https://github.com/virtualstaticvoid/heroku-buildpack-r
-[2]: https://shiny.rstudio.com
-[3]: http://rstudio.github.io/packrat
-[4]: https://docs.docker.com/v17.09/engine/reference/builder/#cmd
-[5]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
-[6]: https://docs.docker.com/engine/reference/builder
-[7]: https://devcenter.heroku.com/articles/container-registry-and-runtime#unsupported-dockerfile-commands
-[8]: https://docs.docker.com/develop/develop-images/multistage-build
-[9]: https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#run-defining-the-processes-to-run
-[10]: https://cran.r-project.org/web/packages/gmp/index.html
-[11]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
-[12]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
+[bp]: https://github.com/virtualstaticvoid/heroku-buildpack-r
+[cmd]: https://docs.docker.com/v17.09/engine/reference/builder/#cmd
+[herokuyml]: https://devcenter.heroku.com/articles/build-docker-images-heroku-yml#run-defining-the-processes-to-run
+[multibuildpack]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
+[packrat]: http://rstudio.github.io/packrat
+[plumber]: https://www.rplumber.io
+[plumber_app]: https://github.com/virtualstaticvoid/heroku-docker-r-plumber-app
+[renv]: http://rstudio.github.io/renv
+[shiny]: https://shiny.rstudio.com
+[shiny_app]: https://github.com/virtualstaticvoid/heroku-docker-r-shiny-app
