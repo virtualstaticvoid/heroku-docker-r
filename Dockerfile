@@ -56,6 +56,15 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && echo 'source("/etc/R/helpers.R")' >> /etc/R/Rprofile.site \
   && mkdir -p /app/R/site-library
 
+RUN export DEBIAN_FRONTEND=noninteractive \
+  && apt-get install -y software-properties-common \
+  && add-apt-repository ppa:c2d4u.team/c2d4u4.0+
+  && apt update -qq \
+  && apt-get remove -y software-properties-common \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 # set /app as working directory
 WORKDIR /app
 
