@@ -1,5 +1,5 @@
 UBUNTU_VERSION:=20.04
-R_VERSION:=4.0.2
+R_VERSION:=4.0.5
 CRAN_VERSION:=cran40
 
 MAINTAINER:=Chris Stefano <virtualstaticvoid@gmail.com>

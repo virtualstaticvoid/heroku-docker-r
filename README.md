@@ -331,7 +331,8 @@ The following table lists the image tags for R version combination:
 
 | R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
 |-----------|---------------|---------------|---------------|-----------------|
-| 4.0.2     | `latest`      |`build`        | `shiny`       | `plumber`       |
+| 4.0.5     | `latest`      |`build`        | `shiny`       | `plumber`       |
+| 4.0.5     |               |`4.0.5-build`  | `4.0.5-shiny` | `4.0.5-plumber` |
 | 4.0.2     |               |`4.0.2-build`  | `4.0.2-shiny` | `4.0.2-plumber` |
 | 4.0.1     |               |`4.0.1-build`  | `4.0.1-shiny` | `4.0.1-plumber` |
 | 4.0.0     |               |`4.0.0-build`  | `4.0.0-shiny` | `4.0.0-plumber` |
