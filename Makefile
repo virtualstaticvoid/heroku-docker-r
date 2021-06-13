@@ -23,7 +23,6 @@ build:
 		--label "build.date=$(BUILD_DATE)" \
 		--label "maintainer=$(MAINTAINER)" \
 		--label "maintainer.url=$(MAINTAINER_URL)" \
-		--label "build.logurl=$(TRAVIS_BUILD_WEB_URL)" \
 		--tag $(IMAGE_TAG) \
 		--tag $(IMAGE_NAME):latest \
 		--file Dockerfile .
