@@ -1,8 +1,5 @@
 # Heroku R Docker Image
 
-[![](https://images.microbadger.com/badges/version/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
-[![](https://images.microbadger.com/badges/image/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
-
 This is the docker image for applications which use [R][rproject] for statistical computing and [CRAN][cran] for R packages, running on [Heroku][heroku].
 
 This project is compatible with the [heroku-buildpack-r][buildpackr] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][container_stack] stack, however there are some caveats if multiple buildpacks were used together with [heroku-buildpack-r][buildpackr].
