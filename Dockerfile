@@ -43,27 +43,20 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     libpcre3-dev \
     locales \
     perl \
+    software-properties-common \
     sudo \
     tzdata \
     wget \
     zlib1g-dev \
     r-base-dev=${R_VERSION}* \
     r-recommended=${R_VERSION}* \
+  && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
   && echo '.libPaths(c("/app/R/site-library", .libPaths()))' >> /etc/R/Rprofile.site \
   && echo 'source("/etc/R/helpers.R")' >> /etc/R/Rprofile.site \
   && mkdir -p /app/R/site-library
-
-RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update -q \
-  && apt-get install -qy software-properties-common \
-  && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
-  && apt-get remove -y software-properties-common \
-  && apt-get autoremove -y \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
 
 # set /app as working directory
 WORKDIR /app
