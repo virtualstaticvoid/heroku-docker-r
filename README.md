@@ -1,8 +1,5 @@
 # Heroku R Docker Image
 
-[![](https://images.microbadger.com/badges/version/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
-[![](https://images.microbadger.com/badges/image/virtualstaticvoid/heroku-docker-r.svg)](https://microbadger.com/images/virtualstaticvoid/heroku-docker-r)
-
 This is the docker image for applications which use [R][rproject] for statistical computing and [CRAN][cran] for R packages, running on [Heroku][heroku].
 
 This project is compatible with the [heroku-buildpack-r][buildpackr] so that it is possible to migrate your existing Heroku R applications and deploy them using the new Heroku [`container`][container_stack] stack, however there are some caveats if multiple buildpacks were used together with [heroku-buildpack-r][buildpackr].
@@ -331,7 +328,8 @@ The following table lists the image tags for R version combination:
 
 | R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
 |-----------|---------------|---------------|---------------|-----------------|
-| 4.0.5     | `latest`      |`build`        | `shiny`       | `plumber`       |
+| 4.1.0     | `latest`      |`build`        | `shiny`       | `plumber`       |
+| 4.1.0     |               |`4.1.0-build`  | `4.1.0-shiny` | `4.1.0-plumber` |
 | 4.0.5     |               |`4.0.5-build`  | `4.0.5-shiny` | `4.0.5-plumber` |
 | 4.0.2     |               |`4.0.2-build`  | `4.0.2-shiny` | `4.0.2-plumber` |
 | 4.0.1     |               |`4.0.1-build`  | `4.0.1-shiny` | `4.0.1-plumber` |
