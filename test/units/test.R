@@ -2,11 +2,11 @@
 options(repos = c("https://cloud.r-project.org", "http://cloud.r-project.org"))
 
 # Install a package without compilation
-install.packages("R6")
+install.packages("R6", quiet=TRUE)
 library(R6)
 
 # Install a package with compilation
-install.packages("BASIX")
+install.packages("BASIX", quiet=TRUE)
 library(BASIX)
 
 # Check that the time zone database is present
