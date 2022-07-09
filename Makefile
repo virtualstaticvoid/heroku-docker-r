@@ -72,3 +72,7 @@ push:
 
 	docker push $(IMAGE_NAME):plumber
 	docker push $(IMAGE_TAG)-plumber
+
+# adapted from https://stackoverflow.com/a/48782113/30521
+env-%:
+	@echo '$($*)'

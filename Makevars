@@ -4,6 +4,6 @@ CRAN_VERSION:=cran40
 
 MAINTAINER:=Chris Stefano <virtualstaticvoid@gmail.com>
 MAINTAINER_URL:=https://github.com/virtualstaticvoid/heroku-docker-r
-IMAGE_NAME:=virtualstaticvoid/heroku-docker-r
-IMAGE_TAG:=$(IMAGE_NAME):$(R_VERSION)
+IMAGE_NAME?=virtualstaticvoid/heroku-docker-r
+IMAGE_TAG?=$(IMAGE_NAME):$(R_VERSION)
 GIT_SHA:=$(shell git rev-parse HEAD)
