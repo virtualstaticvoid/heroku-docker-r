@@ -16,7 +16,7 @@ In your Shiny application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:shiny
+  FROM ghcr.io/virtualstaticvoid/heroku-docker-r:shiny
   ENV PORT=8080
   CMD ["/usr/bin/R", "--no-save", "--gui-none", "-f", "/app/run.R"]
   ```
@@ -71,7 +71,7 @@ In your Plumber application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:plumber
+  FROM ghcr.io/virtualstaticvoid/heroku-docker-r:plumber
   ENV PORT=8080
   CMD ["/usr/bin/R", "--no-save", "--gui-none", "-f", "/app/app.R"]
   ```
@@ -126,7 +126,7 @@ In your R application source's root directory:
 * Create a `Dockerfile` file and insert the following content.
 
   ```
-  FROM virtualstaticvoid/heroku-docker-r:build
+  FROM ghcr.io/virtualstaticvoid/heroku-docker-r:build
   CMD ["/usr/bin/R", "--no-save", "-f", "/app/<R-program>"]
   ```
 
@@ -203,8 +203,8 @@ remote: Compressing source files... done.
 remote: Building source:
 remote: === Fetching app code
 remote: Sending build context to Docker daemon  9.216kB
-remote: Step 1/5 : FROM virtualstaticvoid/heroku-docker-r:build
-remote: build: Pulling from virtualstaticvoid/heroku-docker-r
+remote: Step 1/5 : FROM ghcr.io/virtualstaticvoid/heroku-docker-r:build
+remote: build: Pulling from ghcr.io/virtualstaticvoid/heroku-docker-r
 remote: d3938036b19c: Pulling fs layer
 ...
 remote: 817da545be2b: Waiting
