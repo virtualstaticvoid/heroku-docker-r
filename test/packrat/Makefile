@@ -12,7 +12,7 @@ UID:=$(shell id -u)
 GID:=$(shell id -g)
 SITE_LIB:=$(shell mktemp -d)
 
-all:: build
+all:: test
 .PHONY: all build test
 
 build:
@@ -20,7 +20,7 @@ build:
 	@rm -rf packrat || true
 	@rm .Rprofile || true
 
-	docker run -it --rm --user "$(UID):$(GID)" \
+	docker run --tty --rm --user "$(UID):$(GID)" \
 		--volume "$(PWD):/app" \
 		--volume "$(SITE_LIB):/app/R/site-library" \
 		--env R_LIBS_SITE=/app/R/site-library \
