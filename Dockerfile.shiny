@@ -3,7 +3,7 @@ ARG BASE_IMAGE
 FROM $BASE_IMAGE
 
 # install shiny
-RUN /usr/bin/R --no-save --slave -e "install.packages('shiny', clean=TRUE, verbose=FALSE)"
+RUN /usr/bin/R --no-save --slave -e "install.packages('shiny', clean=TRUE, quiet=TRUE)"
 
 # on build, copy application files
 ONBUILD COPY . /app

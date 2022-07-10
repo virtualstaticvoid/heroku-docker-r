@@ -8,8 +8,26 @@ TEST_IMAGE:=$(IMAGE_TAG)-test-$(PROJ)
 
 export
 
+UID:=$(shell id -u)
+GID:=$(shell id -g)
+SITE_LIB:=$(shell mktemp -d)
+
 all:: test
-.PHONY: all test
+.PHONY: all build test
+
+build:
+
+	@rm -rf packrat || true
+	@rm .Rprofile || true
+
+	docker run --tty --rm --user "$(UID):$(GID)" \
+		--volume "$(PWD):/app" \
+		--volume "$(SITE_LIB):/app/R/site-library" \
+		--env R_LIBS_SITE=/app/R/site-library \
+		--env R_LIBS_USER=/app/R/site-library \
+		--workdir=/app \
+		r-base:$(R_VERSION) \
+		/usr/bin/R --no-save --quiet -s --file=/app/setup.R
 
 test:
 

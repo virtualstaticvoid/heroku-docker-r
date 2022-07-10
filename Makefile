@@ -19,8 +19,6 @@ build:
 		--build-arg CRAN_VERSION=$(CRAN_VERSION) \
 		--label "r.version=$(R_VERSION)" \
 		--label "git.sha=$(GIT_SHA)" \
-		--label "git.date=$(GIT_DATE)" \
-		--label "build.date=$(BUILD_DATE)" \
 		--label "maintainer=$(MAINTAINER)" \
 		--label "maintainer.url=$(MAINTAINER_URL)" \
 		--tag $(IMAGE_TAG) \
@@ -74,3 +72,7 @@ push:
 
 	docker push $(IMAGE_NAME):plumber
 	docker push $(IMAGE_TAG)-plumber
+
+# adapted from https://stackoverflow.com/a/48782113/30521
+env-%:
+	@echo '$($*)'
