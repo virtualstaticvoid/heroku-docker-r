@@ -18,8 +18,8 @@ test:
 		--tag $(TEST_IMAGE) \
 		--file Dockerfile .
 
-	docker-compose up --detach
+	docker compose up --detach
 
-	docker-compose exec shiny /bin/bash /app/test
+	docker compose exec -T $(PROJ) /bin/bash /app/test
 
-	docker-compose down
+	docker compose down
