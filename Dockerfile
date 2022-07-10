@@ -67,6 +67,24 @@ RUN distro=$(lsb_release -c | awk '{print $2}') \
  && echo "deb [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" > /etc/apt/sources.list.d/c2d4u.team.list \
  && echo "deb-src [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" >> /etc/apt/sources.list.d/c2d4u.team.list
 
+# install TinyTeX
+RUN curl -sSL "https://yihui.org/tinytex/install-bin-unix.sh" | sh \
+ && /root/.TinyTeX/bin/*/tlmgr path remove \
+ && mv /root/.TinyTeX/ /opt/TinyTeX \
+ && /opt/TinyTeX/bin/*/tlmgr option sys_bin /usr/local/bin \
+ && /opt/TinyTeX/bin/*/tlmgr path add
+
+# install pandoc
+RUN mkdir -p /opt/pandoc \
+ && curl -sSL https://files.r-hub.io/pandoc/linux-64/pandoc.gz -o /opt/pandoc/pandoc.gz \
+ && gzip -d /opt/pandoc/pandoc.gz \
+ && chmod +x /opt/pandoc/pandoc \
+ && ln -s /opt/pandoc/pandoc /usr/bin/pandoc \
+ && curl -sSL https://files.r-hub.io/pandoc/linux-64/pandoc-citeproc.gz -o /opt/pandoc/pandoc-citeproc.gz \
+ && gzip -d /opt/pandoc/pandoc-citeproc.gz \
+ && chmod +x /opt/pandoc/pandoc-citeproc \
+ && ln -s /opt/pandoc/pandoc-citeproc /usr/bin/pandoc-citeproc
+
 # install R
 RUN apt-get update -q \
  && apt-get install -qy --no-install-recommends \
