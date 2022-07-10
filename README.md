@@ -443,7 +443,7 @@ up-to-date, versions of code and documentation for R.
 [examples-shiny]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/shiny
 [examples-speedy]: https://github.com/virtualstaticvoid/heroku-docker-r-examples/tree/master/speedy
 [examples]: https://github.com/virtualstaticvoid/heroku-docker-r-examples
-[ghcr-tags]: https://github.com/virtualstaticvoid/heroku-docker-r/packages
+[ghcr-tags]: https://github.com/users/virtualstaticvoid/packages/container/package/heroku-docker-r
 [ghcr]: https://github.com/virtualstaticvoid/heroku-docker-r/packages
 [heroku]: https://heroku.com
 [multibuildpack]: https://devcenter.heroku.com/articles/using-multiple-buildpacks-for-an-app
