@@ -54,7 +54,8 @@ RUN distro=$(lsb_release -c | awk '{print $2}') \
  && mkdir -p /etc/apt/keyrings \
  && gpg --export $keyid > /etc/apt/keyrings/cloud.r-project.org.gpg \
  && echo "deb [signed-by=/etc/apt/keyrings/cloud.r-project.org.gpg] https://cloud.r-project.org/bin/linux/ubuntu ${distro}-$CRAN_VERSION/" > /etc/apt/sources.list.d/cloud.r-project.org.list \
- && echo "deb-src [signed-by=/etc/apt/keyrings/cloud.r-project.org.gpg] https://cloud.r-project.org/bin/linux/ubuntu ${distro}-$CRAN_VERSION/" >> /etc/apt/sources.list.d/cloud.r-project.org.list
+ && echo "deb-src [signed-by=/etc/apt/keyrings/cloud.r-project.org.gpg] https://cloud.r-project.org/bin/linux/ubuntu ${distro}-$CRAN_VERSION/" >> /etc/apt/sources.list.d/cloud.r-project.org.list \
+ && rm -rf $GNUPGHOME
 
 # add CRAN modules package configurations
 # https://launchpad.net/~c2d4u.team/+archive/ubuntu/c2d4u4.0+
@@ -65,7 +66,8 @@ RUN distro=$(lsb_release -c | awk '{print $2}') \
  && mkdir -p /etc/apt/keyrings \
  && gpg --export $keyid > /etc/apt/keyrings/c2d4u.team.gpg \
  && echo "deb [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" > /etc/apt/sources.list.d/c2d4u.team.list \
- && echo "deb-src [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" >> /etc/apt/sources.list.d/c2d4u.team.list
+ && echo "deb-src [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" >> /etc/apt/sources.list.d/c2d4u.team.list \
+ && rm -rf $GNUPGHOME
 
 # install TinyTeX
 RUN curl -sSL "https://yihui.org/tinytex/install-bin-unix.sh" | sh \
