@@ -374,7 +374,8 @@ available on [GitHub Container Registry][ghcr], including:
 
 | Ubuntu Version | R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
 |----------------|-----------|---------------|---------------|---------------|-----------------|
-| `22.04`        | `4.2.1`   | `latest`      | `build`       | `shiny`       | `plumber`       |
+| `22.04`        | `4.2.2`   | `latest`      | `build`       | `shiny`       | `plumber`       |
+| `22.04`        | `4.2.2`   |               | `4.2.2-build` | `4.2.2-shiny` | `4.2.2-plumber` |
 | `22.04`        | `4.2.1`   |               | `4.2.1-build` | `4.2.1-shiny` | `4.2.1-plumber` |
 
 Previous versions for [`virtualstaticvoid/heroku-docker-r`][tags] are available 
