@@ -14,15 +14,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        r_version:
+          - 4.2.3
+          - 4.3.3
+          - 4.4.2
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Build
-        run: make --no-builtin-rules build
+        run: make --no-builtin-rules build R_VERSION=${{ matrix.r_version }}
 
       - name: Unit Tests
-        run: make --no-builtin-rules test
+        run: make --no-builtin-rules test R_VERSION=${{ matrix.r_version }}
 
       - name: Log into registry
         if: github.event_name != 'pull_request'
@@ -34,4 +41,4 @@ jobs:
 
       - name: Publish images
         if: github.event_name != 'pull_request'
-        run: make --no-builtin-rules push
+        run: make --no-builtin-rules push R_VERSION=${{ matrix.r_version }}
