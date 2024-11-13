@@ -27,6 +27,7 @@ RUN apt-get update -q \
       gnupg2 \
       libbz2-dev \
       libcurl4-openssl-dev \
+      libdeflate-dev \
       libicu-dev \
       liblzma-dev \
       libpcre2-dev \
