@@ -10,7 +10,6 @@ export
 
 .PHONY: build
 build:
-
 	# "base" image
 	docker build \
 		--pull \
@@ -48,7 +47,6 @@ build:
 
 .PHONY: test
 test:
-
 	# smoke test images, before running units
 	docker run --tty --rm $(IMAGE_TAG) R --no-save -e "capabilities()"
 	docker run --tty --rm $(IMAGE_TAG)-build R --no-save -e "capabilities()"
@@ -60,18 +58,19 @@ test:
 
 .PHONY: push
 push:
-
-	docker push $(IMAGE_NAME):latest
+	# image names contain R version
 	docker push $(IMAGE_TAG)
-
-	docker push $(IMAGE_NAME):build
 	docker push $(IMAGE_TAG)-build
-
-	docker push $(IMAGE_NAME):shiny
 	docker push $(IMAGE_TAG)-shiny
-
-	docker push $(IMAGE_NAME):plumber
 	docker push $(IMAGE_TAG)-plumber
+
+.PHONY: push-latest
+push-latest:
+	# images labelled as "latest"
+	docker push $(IMAGE_NAME):latest
+	docker push $(IMAGE_NAME):build
+	docker push $(IMAGE_NAME):shiny
+	docker push $(IMAGE_NAME):plumber
 
 # adapted from https://stackoverflow.com/a/48782113/30521
 env-%:

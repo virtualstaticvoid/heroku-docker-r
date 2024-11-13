@@ -1,4 +1,4 @@
-ARG UBUNTU_VERSION
+ARG UBUNTU_VERSION=latest
 FROM ubuntu:$UBUNTU_VERSION
 
 ARG R_VERSION
@@ -27,6 +27,7 @@ RUN apt-get update -q \
       gnupg2 \
       libbz2-dev \
       libcurl4-openssl-dev \
+      libdeflate-dev \
       libicu-dev \
       liblzma-dev \
       libpcre2-dev \
@@ -36,6 +37,8 @@ RUN apt-get update -q \
       libxml2-dev \
       locales \
       lsb-release \
+      pandoc \
+      pandoc-citeproc \
       perl \
       software-properties-common \
       sudo \
@@ -75,17 +78,6 @@ RUN curl -sSL "https://yihui.org/tinytex/install-bin-unix.sh" | sh \
  && mv /root/.TinyTeX/ /opt/TinyTeX \
  && /opt/TinyTeX/bin/*/tlmgr option sys_bin /usr/local/bin \
  && /opt/TinyTeX/bin/*/tlmgr path add
-
-# install pandoc
-RUN mkdir -p /opt/pandoc \
- && curl -sSL https://files.r-hub.io/pandoc/linux-64/pandoc.gz -o /opt/pandoc/pandoc.gz \
- && gzip -d /opt/pandoc/pandoc.gz \
- && chmod +x /opt/pandoc/pandoc \
- && ln -s /opt/pandoc/pandoc /usr/bin/pandoc \
- && curl -sSL https://files.r-hub.io/pandoc/linux-64/pandoc-citeproc.gz -o /opt/pandoc/pandoc-citeproc.gz \
- && gzip -d /opt/pandoc/pandoc-citeproc.gz \
- && chmod +x /opt/pandoc/pandoc-citeproc \
- && ln -s /opt/pandoc/pandoc-citeproc /usr/bin/pandoc-citeproc
 
 # install R
 RUN apt-get update -q \
