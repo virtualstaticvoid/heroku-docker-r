@@ -52,5 +52,5 @@ jobs:
         run: make --no-builtin-rules push R_VERSION=${{ matrix.r_version }}
 
       - name: Publish latest images
-        if: github.event_name != 'pull_request' && '${{ matrix.r_version }}' == '${{ env.LATEST_VERSION }}'
+        if: github.event_name != 'pull_request' && env.LATEST_VERSION == matrix.r_version
         run: make --no-builtin-rules push-latest R_VERSION=${{ matrix.r_version }}
