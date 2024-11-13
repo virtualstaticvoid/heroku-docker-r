@@ -1,4 +1,4 @@
-ARG BASE_IMAGE
+ARG BASE_IMAGE=provide-via-build-arg
 
 FROM $BASE_IMAGE
 
