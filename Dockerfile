@@ -38,7 +38,6 @@ RUN apt-get update -q \
       locales \
       lsb-release \
       pandoc \
-      pandoc-citeproc \
       perl \
       software-properties-common \
       sudo \
