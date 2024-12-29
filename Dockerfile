@@ -5,10 +5,10 @@ ARG R_VERSION
 ARG CRAN_VERSION
 
 # Set default locale
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # Set default timezone
-ENV TZ UTC
+ENV TZ=UTC
 
 # copy over helpers script
 COPY helpers.R /etc/R/helpers.R
