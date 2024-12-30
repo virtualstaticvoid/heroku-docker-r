@@ -374,8 +374,8 @@ available on [GitHub Container Registry][ghcr], including:
 
 | Ubuntu Version | R Version | Base Tag      | Build Tag     | Shiny Tag     | Plumber Tag     |
 |----------------|-----------|---------------|---------------|---------------|-----------------|
-| `22.04`        | `4.4.2`   | `latest`      | `build`       | `shiny`       | `plumber`       |
-| `22.04`        | `4.4.2`   |               | `4.4.2-build` | `4.4.2-shiny` | `4.4.2-plumber` |
+| `24.04`        | `4.4.2`   | `latest`      | `build`       | `shiny`       | `plumber`       |
+| `24.04`        | `4.4.2`   |               | `4.4.2-build` | `4.4.2-shiny` | `4.4.2-plumber` |
 | `22.04`        | `4.3.3`   |               | `4.3.3-build` | `4.3.3-shiny` | `4.3.3-plumber` |
 | `22.04`        | `4.2.3`   |               | `4.2.3-build` | `4.2.3-shiny` | `4.2.3-plumber` |
 | `22.04`        | `4.2.2`   |               | `4.2.2-build` | `4.2.2-shiny` | `4.2.2-plumber` |

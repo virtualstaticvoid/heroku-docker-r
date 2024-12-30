@@ -5,10 +5,10 @@ ARG R_VERSION
 ARG CRAN_VERSION
 
 # Set default locale
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # Set default timezone
-ENV TZ UTC
+ENV TZ=UTC
 
 # copy over helpers script
 COPY helpers.R /etc/R/helpers.R
@@ -38,7 +38,6 @@ RUN apt-get update -q \
       locales \
       lsb-release \
       pandoc \
-      pandoc-citeproc \
       perl \
       software-properties-common \
       sudo \
@@ -58,18 +57,6 @@ RUN distro=$(lsb_release -c | awk '{print $2}') \
  && gpg --export $keyid > /etc/apt/keyrings/cloud.r-project.org.gpg \
  && echo "deb [signed-by=/etc/apt/keyrings/cloud.r-project.org.gpg] https://cloud.r-project.org/bin/linux/ubuntu ${distro}-$CRAN_VERSION/" > /etc/apt/sources.list.d/cloud.r-project.org.list \
  && echo "deb-src [signed-by=/etc/apt/keyrings/cloud.r-project.org.gpg] https://cloud.r-project.org/bin/linux/ubuntu ${distro}-$CRAN_VERSION/" >> /etc/apt/sources.list.d/cloud.r-project.org.list \
- && rm -rf $GNUPGHOME
-
-# add CRAN modules package configurations
-# https://launchpad.net/~c2d4u.team/+archive/ubuntu/c2d4u4.0+
-RUN distro=$(lsb_release -c | awk '{print $2}') \
- && keyid=6E12762B81063D17BDDD3142F142A4D99F16EB04 \
- && export GNUPGHOME="$(mktemp -d)" \
- && gpg --recv-keys --keyserver keyserver.ubuntu.com $keyid \
- && mkdir -p /etc/apt/keyrings \
- && gpg --export $keyid > /etc/apt/keyrings/c2d4u.team.gpg \
- && echo "deb [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" > /etc/apt/sources.list.d/c2d4u.team.list \
- && echo "deb-src [signed-by=/etc/apt/keyrings/c2d4u.team.gpg] https://ppa.launchpadcontent.net/c2d4u.team/c2d4u4.0+/ubuntu/ ${distro} main" >> /etc/apt/sources.list.d/c2d4u.team.list \
  && rm -rf $GNUPGHOME
 
 # install TinyTeX
